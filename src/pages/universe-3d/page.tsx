@@ -2,11 +2,12 @@ import { useState, useRef, useMemo, useCallback, useEffect, Suspense } from 'rea
 import { useNavigate } from 'react-router-dom';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Html } from '@react-three/drei';
-import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
+import { EffectComposer, Bloom, Vignette, Noise } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import SystemView3D, { type PlanetConfig } from './components/SystemView3D';
 import TerritoryMesh3D, { type TerritoryData } from './components/TerritoryMesh3D';
 import AnomalyNode3D from './components/AnomalyNode3D';
+import { useStellarisAnomalies } from '@/hooks/useStellarisAnomalies';
 
 // ────────────────────────────────────────────────────────────
 // TYPES
