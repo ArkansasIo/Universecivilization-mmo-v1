@@ -164,6 +164,7 @@ const NAV_SECTIONS: NavSection[] = [
       { label: 'Stargate Network', path: '/stargate-network', icon: 'ri-focus-2-line' },
       { label: 'Seed Discovery', path: '/seed-discovery', icon: 'ri-focus-3-line' },
       { label: 'Stellaris View', path: '/stellaris-view', icon: 'ri-global-fill' },
+      { label: 'Game Viewport', path: '/game-viewport', icon: 'ri-eye-line', badge: 'NEW' },
       { label: 'Galactic Calendar', path: '/galactic-calendar', icon: 'ri-calendar-2-line', badge: 'TIME' },
     ],
   },
@@ -971,7 +972,7 @@ export default function GameLayout({ children }: { children: React.ReactNode }) 
 
   const sidebarWidth = collapsed ? 52 : 220;
 
-  const isGalaxyPage = ['/galaxy', '/galaxy-map', '/universe', '/universe-3d', '/sectors', '/stargate-network'].includes(location.pathname);
+  const isGalaxyPage = ['/galaxy', '/galaxy-map', '/universe', '/universe-3d', '/sectors', '/stargate-network', '/game-viewport'].includes(location.pathname);
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('sidebar-collapse', { detail: { collapsed } }));

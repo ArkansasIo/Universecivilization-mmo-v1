@@ -3,6 +3,8 @@ import { RouteObject } from 'react-router-dom';
 import GameRoutesLayout from '../components/feature/GameRoutesLayout';
 import AdminRoutesLayout from '../components/feature/AdminRoutesLayout';
 
+const GameViewportPage = lazy(() => import('../pages/game-viewport/page'));
+
 // Public / auth pages (no game layout)
 const HomePage = lazy(() => import('../pages/home/page'));
 const LoginPage = lazy(() => import('../pages/login/page'));
@@ -130,6 +132,7 @@ const AlcPowerTechPage = lazy(() => import('../pages/alc-power-tech/page'));
 const routes: RouteObject[] = [
   // ── Public routes (no game shell) ──────────────────────────────────
   { path: '/', element: <HomePage /> },
+  { path: '/game-viewport', element: <GameViewportPage /> },
   { path: '/login', element: <LoginPage /> },
   { path: '/register', element: <RegisterPage /> },
   { path: '/verify-email', element: <VerifyEmailPage /> },
