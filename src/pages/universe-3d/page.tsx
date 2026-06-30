@@ -5,6 +5,11 @@ import { OrbitControls, Stars, Text, Html, PerspectiveCamera, Line } from '@reac
 import { EffectComposer, Bloom, Vignette, Noise } from '@react-three/postprocessing';
 import { supabase } from '@/lib/supabase';
 import * as THREE from 'three';
+import SystemView3D, { type PlanetConfig } from './components/SystemView3D';
+import TerritoryMesh3D, { type TerritoryData } from './components/TerritoryMesh3D';
+import AnomalyNode3D from './components/AnomalyNode3D';
+import { useStellarisAnomalies, type StellarisAnomaly, type AnomalyCategory, type AnomalyDifficulty } from '@/hooks/useStellarisAnomalies';
+import AnomalyInvestigationModal from '@/pages/stellaris-view/components/AnomalyInvestigationModal';
 
 // ────────────────────────────────────────────────────────────
 // TYPES
@@ -391,6 +396,93 @@ const GALAXIES: GalaxyData[] = [
 ];
 
 // ────────────────────────────────────────────────────────────
+// TERRITORY DATA FOR 3D MESH
+// ────────────────────────────────────────────────────────────
+const TERRITORIES: TerritoryData[] = [
+  {
+    id: 'stellar_empire', empireName: 'Stellar Empire', color: '#f87171',
+    systems: [
+      { position: [-22, 7, -28], name: 'Arcturus Gate' },
+      { position: [-25, 5, -30], name: 'Andromeda Prime' },
+      { position: [-20, -5, -25], name: 'Stellar Reach' },
+    ],
+  },
+  {
+    id: 'void_collective', empireName: 'Void Collective', color: '#a78bfa',
+    systems: [
+      { position: [18, -5, -18], name: 'Sol Prime' },
+      { position: [20, -8, -20], name: 'Milky Way Nexus' },
+      { position: [15, -12, -15], name: 'Void Gate' },
+    ],
+  },
+  {
+    id: 'iron_federation', empireName: 'Iron Federation', color: '#60a5fa',
+    systems: [
+      { position: [-18, -10, 17], name: 'Rigel Alpha' },
+      { position: [-20, -12, 15], name: 'Triangulum Expanse' },
+      { position: [-15, -8, 20], name: 'Iron Bastion' },
+    ],
+  },
+  {
+    id: 'merchant_guild', empireName: 'Merchant Guild', color: '#fbbf24',
+    systems: [
+      { position: [28, 17, -33], name: 'Nova Station' },
+      { position: [30, 15, -35], name: 'Centaurus Cluster' },
+    ],
+  },
+  {
+    id: 'shadow_syndicate', empireName: 'Shadow Syndicate', color: '#f472b6',
+    systems: [
+      { position: [-33, -18, -8], name: 'Void Nexus' },
+      { position: [-35, -20, -10], name: 'Draco Void' },
+    ],
+  },
+  {
+    id: 'celestial_order', empireName: 'Celestial Order', color: '#38bdf8',
+    systems: [
+      { position: [13, 27, -38], name: 'Zeta Orionis' },
+      { position: [15, 25, -40], name: 'Orion Frontier' },
+    ],
+  },
+  {
+    id: 'nomad_clans', empireName: 'Nomad Clans', color: '#34d399',
+    systems: [
+      { position: [7, 22, 27], name: 'Crimson Deep' },
+    ],
+  },
+  {
+    id: 'free_worlds', empireName: 'Free Worlds', color: '#a3e635',
+    systems: [
+      { position: [-3, -28, 32], name: 'Vega Station' },
+      { position: [-5, -30, 30], name: 'Pegasus Reach' },
+    ],
+  },
+];
+
+// ────────────────────────────────────────────────────────────
+// PLANET GENERATION FOR SYSTEM VIEW
+// ────────────────────────────────────────────────────────────
+const PLANET_TEMPLATES: Record<string, PlanetConfig[]> = {
+  default: [
+    { name: 'Ember', radius: 0.08, orbitRadius: 0.8, color: '#f87171', speed: 1.2, type: 'lava' },
+    { name: 'Verdant', radius: 0.1, orbitRadius: 1.5, color: '#4ade80', speed: 0.8, type: 'terran' },
+    { name: 'Azure', radius: 0.09, orbitRadius: 2.2, color: '#22d3ee', speed: 0.6, type: 'ocean' },
+    { name: 'Dust', radius: 0.06, orbitRadius: 3.0, color: '#fb923c', speed: 0.5, type: 'desert' },
+    { name: 'Titan', radius: 0.18, orbitRadius: 4.0, color: '#fbbf24', speed: 0.35, type: 'gas', hasRing: true, ringColor: '#d4a043', ringSize: 0.2 },
+    { name: 'Frost', radius: 0.07, orbitRadius: 5.2, color: '#60a5fa', speed: 0.25, type: 'ice' },
+  ],
+  compact: [
+    { name: 'Scorch', radius: 0.07, orbitRadius: 0.6, color: '#f87171', speed: 1.5, type: 'lava' },
+    { name: 'Haven', radius: 0.09, orbitRadius: 1.2, color: '#4ade80', speed: 1.0, type: 'terran' },
+    { name: 'Gas Giant', radius: 0.15, orbitRadius: 2.0, color: '#fbbf24', speed: 0.6, type: 'gas', hasRing: true, ringColor: '#c084fc', ringSize: 0.15 },
+  ],
+  sparse: [
+    { name: 'Rock', radius: 0.06, orbitRadius: 0.8, color: '#9ca3af', speed: 1.0, type: 'barren' },
+    { name: 'Gas', radius: 0.12, orbitRadius: 1.8, color: '#fbbf24', speed: 0.5, type: 'gas' },
+  ],
+};
+
+// ────────────────────────────────────────────────────────────
 // STAR TYPE CONFIG
 // ────────────────────────────────────────────────────────────
 const STAR_COLORS: Record<string, string> = {
@@ -764,16 +856,32 @@ function SceneContent({
   onSelectGalaxy,
   onSelectSystem,
   onSelectFleet,
+  onSelectAnomaly,
   tourActive,
   onTourComplete,
   onTourInterrupt,
+  showTerritories,
+  showAnomalies,
+  viewingSystem,
+  anomalies,
+  getAnomalyColor,
+  getDifficultyColor,
+  onCloseSystemView,
 }: {
   onSelectGalaxy: (g: GalaxyData) => void;
   onSelectSystem: (s: SystemNode) => void;
   onSelectFleet: (f: FleetPosition) => void;
+  onSelectAnomaly: (a: StellarisAnomaly) => void;
   tourActive: boolean;
   onTourComplete: () => void;
   onTourInterrupt: () => void;
+  showTerritories: boolean;
+  showAnomalies: boolean;
+  viewingSystem: SystemNode | null;
+  anomalies: StellarisAnomaly[];
+  getAnomalyColor: (cat: AnomalyCategory) => string;
+  getDifficultyColor: (diff: AnomalyDifficulty) => string;
+  onCloseSystemView: () => void;
 }) {
   const nebulae = useMemo(() => [
     { position: [10, 15, -20] as [number, number, number], color: '#6610f2', size: 12 },
@@ -785,7 +893,6 @@ function SceneContent({
   ], []);
 
   const systemNodes: SystemNode[] = useMemo(() => [
-    // Some key systems around the galaxies
     { id: 's1', name: 'Sol Prime', position: [18, -5, -18], starType: 'G', planets: 8, habitable: 1, faction: 'Void Collective', factionColor: '#a78bfa' },
     { id: 's2', name: 'Arcturus Gate', position: [-22, 7, -28], starType: 'red_giant', planets: 12, habitable: 3, faction: 'Stellar Empire', factionColor: '#f87171' },
     { id: 's3', name: 'Rigel Alpha', position: [-18, -10, 17], starType: 'blue_giant', planets: 6, habitable: 0, faction: 'Iron Federation', factionColor: '#60a5fa' },
@@ -797,6 +904,13 @@ function SceneContent({
     { id: 's9', name: 'Trading Post X', position: [-28, -22, -13], starType: 'K', planets: 7, habitable: 1, faction: null, factionColor: '#ffffff' },
     { id: 's10', name: 'Deep Space 7', position: [35, -8, -22], starType: 'F', planets: 3, habitable: 0, faction: null, factionColor: '#ffffff' },
   ], []);
+
+  const viewingSystemPlanets: PlanetConfig[] = useMemo(() => {
+    if (!viewingSystem) return [];
+    if (viewingSystem.planets >= 7) return PLANET_TEMPLATES.default;
+    if (viewingSystem.planets >= 3) return PLANET_TEMPLATES.compact;
+    return PLANET_TEMPLATES.sparse;
+  }, [viewingSystem]);
 
   return (
     <>
@@ -823,6 +937,35 @@ function SceneContent({
 
       {/* Fleet markers from live DB data */}
       <FleetMarkers onClick={onSelectFleet} />
+
+      {/* Territory mesh — empire borders */}
+      {showTerritories && <TerritoryMesh3D territories={TERRITORIES} />}
+
+      {/* Anomaly nodes — discoverable space anomalies */}
+      {showAnomalies && anomalies.filter(a => a.status !== 'undiscovered').map((a) => (
+        <AnomalyNode3D
+          key={a.id}
+          anomaly={a}
+          getCategoryColor={getAnomalyColor}
+          getDifficultyColor={getDifficultyColor}
+          onInvestigate={(id) => {
+            const found = anomalies.find(an => an.id === id);
+            if (found) onSelectAnomaly(found);
+          }}
+        />
+      ))}
+
+      {/* System View 3D — detailed solar system when a system is selected */}
+      {viewingSystem && (
+        <SystemView3D
+          position={viewingSystem.position}
+          starColor={STAR_COLORS[viewingSystem.starType] || '#ffffff'}
+          starGlow={STAR_GLOW[viewingSystem.starType] || '#ffd000'}
+          planets={viewingSystemPlanets}
+          starType={viewingSystem.starType}
+          onClose={onCloseSystemView}
+        />
+      )}
 
       {/* Cinematic auto-tour camera */}
       <CinematicCamera active={tourActive} onComplete={onTourComplete} onInterrupt={onTourInterrupt} />
@@ -1021,6 +1164,7 @@ export default function Universe3DPage() {
   const [selectedGalaxy, setSelectedGalaxy] = useState<GalaxyData | null>(null);
   const [selectedSystem, setSelectedSystem] = useState<SystemNode | null>(null);
   const [selectedFleet, setSelectedFleet] = useState<FleetPosition | null>(null);
+  const [selectedAnomaly, setSelectedAnomaly] = useState<StellarisAnomaly | null>(null);
   const [loading, setLoading] = useState(true);
   
   // Tour state
@@ -1033,21 +1177,82 @@ export default function Universe3DPage() {
   const zoomStartRef = useRef(0);
   const zoomAnimRef = useRef<number>(0);
 
+  // Stellaris features state
+  const [showTerritories, setShowTerritories] = useState(true);
+  const [showAnomalies, setShowAnomalies] = useState(true);
+  const [viewingSystem, setViewingSystem] = useState<SystemNode | null>(null);
+  const {
+    anomalies,
+    investigating,
+    investigationProgress,
+    discoverAnomaly,
+    startInvestigation,
+    getAnomalyColor,
+    getDifficultyColor,
+  } = useStellarisAnomalies();
+
+  // Discover anomalies for systems on mount
+  useEffect(() => {
+    const systemList = [
+      { id: 's1', name: 'Sol Prime', starType: 'G', pos: [18, -5, -18] },
+      { id: 's2', name: 'Arcturus Gate', starType: 'red_giant', pos: [-22, 7, -28] },
+      { id: 's3', name: 'Rigel Alpha', starType: 'blue_giant', pos: [-18, -10, 17] },
+      { id: 's4', name: 'Nova Station', starType: 'neutron', pos: [28, 17, -33] },
+      { id: 's5', name: 'Void Nexus', starType: 'black_hole', pos: [-33, -18, -8] },
+      { id: 's6', name: 'Zeta Orionis', starType: 'O', pos: [13, 27, -38] },
+      { id: 's7', name: 'Crimson Deep', starType: 'M', pos: [7, 22, 27] },
+      { id: 's8', name: 'Vega Station', starType: 'A', pos: [-3, -28, 32] },
+      { id: 's9', name: 'Trading Post X', starType: 'K', pos: [-28, -22, -13] },
+      { id: 's10', name: 'Deep Space 7', starType: 'F', pos: [35, -8, -22] },
+    ];
+    // Discover anomalies for half the systems randomly
+    const toDiscover = systemList.filter(() => Math.random() > 0.5);
+    toDiscover.forEach(sys => {
+      discoverAnomaly({
+        id: `anomaly-3d-${sys.id}`,
+        systemId: sys.id,
+        systemName: sys.name,
+        starType: sys.starType,
+        position: { x: sys.pos[0], y: sys.pos[1] - 0.8, z: sys.pos[2] },
+      });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleSelectGalaxy = useCallback((g: GalaxyData) => {
     setSelectedGalaxy(g);
     setSelectedSystem(null);
     setSelectedFleet(null);
+    setSelectedAnomaly(null);
+    setViewingSystem(null);
   }, []);
 
   const handleSelectSystem = useCallback((s: SystemNode) => {
     setSelectedSystem(s);
     setSelectedGalaxy(null);
     setSelectedFleet(null);
+    setSelectedAnomaly(null);
+    setViewingSystem(s);
   }, []);
 
   const handleSelectFleet = useCallback((f: FleetPosition) => {
     setSelectedFleet(f);
     setSelectedGalaxy(null);
+    setSelectedSystem(null);
+    setSelectedAnomaly(null);
+    setViewingSystem(null);
+  }, []);
+
+  const handleSelectAnomaly = useCallback((a: StellarisAnomaly) => {
+    setSelectedAnomaly(a);
+    setSelectedGalaxy(null);
+    setSelectedSystem(null);
+    setSelectedFleet(null);
+    setViewingSystem(null);
+  }, []);
+
+  const handleCloseSystemView = useCallback(() => {
+    setViewingSystem(null);
     setSelectedSystem(null);
   }, []);
 
@@ -1122,9 +1327,17 @@ export default function Universe3DPage() {
             onSelectGalaxy={handleSelectGalaxy}
             onSelectSystem={handleSelectSystem}
             onSelectFleet={handleSelectFleet}
+            onSelectAnomaly={handleSelectAnomaly}
             tourActive={tourActive}
             onTourComplete={handleTourComplete}
             onTourInterrupt={handleTourInterrupt}
+            showTerritories={showTerritories}
+            showAnomalies={showAnomalies}
+            viewingSystem={viewingSystem}
+            anomalies={anomalies}
+            getAnomalyColor={getAnomalyColor}
+            getDifficultyColor={getDifficultyColor}
+            onCloseSystemView={handleCloseSystemView}
           />
           {!tourActive && (
             <OrbitControls
@@ -1150,11 +1363,39 @@ export default function Universe3DPage() {
           <div className="h-4 w-px bg-white/10"></div>
           <span className="text-xs text-gray-400">{GALAXIES.length} Galaxies · Real-time 3D Render</span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          {/* Territory toggle */}
+          <button
+            onClick={() => setShowTerritories(prev => !prev)}
+            className="px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-all"
+            style={{
+              background: showTerritories ? 'rgba(167,139,250,0.15)' : 'rgba(255,255,255,0.05)',
+              border: `1px solid ${showTerritories ? 'rgba(167,139,250,0.4)' : 'rgba(255,255,255,0.08)'}`,
+              color: showTerritories ? '#a78bfa' : '#666',
+            }}
+          >
+            <i className="ri-map-2-line mr-1"></i>
+            Borders
+          </button>
+
+          {/* Anomalies toggle */}
+          <button
+            onClick={() => setShowAnomalies(prev => !prev)}
+            className="px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-all"
+            style={{
+              background: showAnomalies ? 'rgba(251,191,36,0.15)' : 'rgba(255,255,255,0.05)',
+              border: `1px solid ${showAnomalies ? 'rgba(251,191,36,0.4)' : 'rgba(255,255,255,0.08)'}`,
+              color: showAnomalies ? '#fbbf24' : '#666',
+            }}
+          >
+            <i className="ri-flashlight-line mr-1"></i>
+            Anomalies
+          </button>
+
           {/* Tour button */}
           <button
             onClick={handleStartTour}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap cursor-pointer transition-all ${
+            className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-all ${
               tourActive ? 'opacity-50 pointer-events-none' : ''
             }`}
             style={{
@@ -1166,7 +1407,7 @@ export default function Universe3DPage() {
             }}
           >
             <i className={`${tourActive ? 'ri-film-line animate-pulse' : 'ri-film-line'} mr-1`}></i>
-            {tourActive ? 'Touring...' : tourCompleted ? 'Replay Tour' : 'Start Tour'}
+            {tourActive ? 'Touring...' : tourCompleted ? 'Replay Tour' : 'Tour'}
           </button>
 
           {/* Galaxy quick-nav */}
@@ -1175,11 +1416,11 @@ export default function Universe3DPage() {
               <button
                 key={g.id}
                 onClick={() => handleSelectGalaxy(g)}
-                className="w-6 h-6 rounded-full border-2 transition-all cursor-pointer"
+                className="w-5 h-5 rounded-full border-2 transition-all cursor-pointer"
                 style={{
                   background: selectedGalaxy?.id === g.id ? g.color : 'transparent',
                   borderColor: g.color,
-                  boxShadow: selectedGalaxy?.id === g.id ? `0 0 10px ${g.color}` : 'none',
+                  boxShadow: selectedGalaxy?.id === g.id ? `0 0 8px ${g.color}` : 'none',
                 }}
                 title={g.name}
               />
@@ -1225,6 +1466,17 @@ export default function Universe3DPage() {
       )}
       {selectedFleet && (
         <FleetInfoPanel fleet={selectedFleet} onClose={() => setSelectedFleet(null)} />
+      )}
+      {selectedAnomaly && (
+        <AnomalyInvestigationModal
+          anomaly={selectedAnomaly}
+          investigating={investigating}
+          investigationProgress={investigationProgress}
+          getCategoryColor={getAnomalyColor}
+          getDifficultyColor={getDifficultyColor}
+          onStartInvestigation={startInvestigation}
+          onClose={() => setSelectedAnomaly(null)}
+        />
       )}
 
       {/* Tour progress bar */}

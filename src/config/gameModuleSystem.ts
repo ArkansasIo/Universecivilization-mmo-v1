@@ -981,8 +981,29 @@ export const GAME_MODULES: Record<string, ModuleDef> = {
         route: '/universe',
         categories: {
           standard: { id: 'standard', label: 'Universe Overview', icon: 'ri-global-line', color: '#A855F7', description: '2D universe map.', subCategories: { galaxies: { id: 'galaxies', label: 'Galaxies', description: '' }, systems: { id: 'systems', label: 'Solar Systems', description: '' }, players: { id: 'players', label: 'Players', description: '' } } },
-          threeD: { id: 'threeD', label: '3D Universe', icon: 'ri-cube-3d-line', color: '#EC4899', description: '3D interactive universe.', route: '/universe-3d' },
-          stellaris: { id: 'stellaris', label: 'Stellaris View', icon: 'ri-eye-line', color: '#06B6D4', description: 'Strategy map view.', route: '/stellaris-view' },
+          threeD: {
+            id: 'threeD', label: '3D Universe', icon: 'ri-cube-3d-line', color: '#EC4899',
+            description: '3D interactive universe with Stellaris-like features.',
+            route: '/universe-3d',
+            subCategories: {
+              systemView: { id: 'systemView', label: 'System View 3D', description: 'Detailed 3D solar system with orbiting planets, asteroid belts, rings.' },
+              territoryMesh: { id: 'territoryMesh', label: 'Empire Territories 3D', description: '3D empire territory clouds and border lines.' },
+              anomalyNodes: { id: 'anomalyNodes', label: 'Space Anomalies 3D', description: 'Discoverable anomaly markers with investigation UI in 3D space.' },
+              expansion: { id: 'expansion', label: 'Territory Expansion', description: 'Influence, outposts, starbases, system claims.' },
+              investigations: { id: 'investigations', label: 'Anomaly Investigations', description: 'Branching investigation paths with outcomes.' },
+            },
+          },
+          stellaris: {
+            id: 'stellaris', label: 'Stellaris View', icon: 'ri-eye-line', color: '#06B6D4',
+            description: 'Strategy map view with anomaly investigation and territory expansion.',
+            route: '/stellaris-view',
+            subCategories: {
+              anomalyInvestigation: { id: 'anomalyInvestigation', label: 'Anomaly Investigation', description: 'Investigate discovered anomalies with branching outcomes.' },
+              territoryClaims: { id: 'territoryClaims', label: 'Territory Claims', description: 'Influence system for claiming systems and building starbases.' },
+              empireBorders: { id: 'empireBorders', label: 'Empire Borders', description: 'Visual territory borders and contested systems.' },
+              firstContact: { id: 'firstContact', label: 'First Contact', description: 'First contact system for discovering alien empires.' },
+            },
+          },
           cosmic: { id: 'cosmic', label: 'Cosmic Hierarchy', icon: 'ri-organization-chart', color: '#F59E0B', description: 'Universal structure.', route: '/cosmic-hierarchy' },
         },
       },
