@@ -1,6 +1,7 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useRegisteredTexture } from '../../../../engine';
 import { type StarData } from './galaxyData';
 
 interface StarNode3DProps {
@@ -12,8 +13,9 @@ interface StarNode3DProps {
 export default function StarNode3D({ star, onClick, isSelected }: StarNode3DProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const spriteRef = useRef<THREE.Sprite>(null);
+  const { data: registeredGlowTexture } = useRegisteredTexture('texture.star.glow');
 
-  const glowTexture = useMemo(() => {
+  const proceduralGlowTexture = useMemo(() => {
     const canvas = document.createElement('canvas');
     canvas.width = 64; canvas.height = 64;
     const ctx = canvas.getContext('2d')!;
@@ -27,6 +29,8 @@ export default function StarNode3D({ star, onClick, isSelected }: StarNode3DProp
     const tex = new THREE.CanvasTexture(canvas);
     return tex;
   }, [star.color]);
+
+  const glowTexture = registeredGlowTexture ?? proceduralGlowTexture;
 
   useFrame((_, delta) => {
     if (meshRef.current) {

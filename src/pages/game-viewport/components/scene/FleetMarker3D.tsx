@@ -1,6 +1,7 @@
 import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useRegisteredTexture } from '../../../../engine';
 import { type StarData } from './galaxyData';
 
 interface FleetData {
@@ -25,6 +26,7 @@ interface FleetMarker3DProps {
 function FleetIcon({ fleet, starMap, isOwn, onClick }: { fleet: FleetData; starMap: Map<string, StarData>; isOwn: boolean; onClick?: () => void }) {
   const groupRef = useRef<THREE.Group>(null);
   const originStar = starMap.get(fleet.originStarId);
+  const { data: fleetTexture } = useRegisteredTexture('texture.fleet.emissive');
 
   const position = useMemo(() => {
     if (!originStar) return new THREE.Vector3(0, 0, 0);
@@ -50,7 +52,7 @@ function FleetIcon({ fleet, starMap, isOwn, onClick }: { fleet: FleetData; starM
     <group ref={groupRef} position={[position.x, position.y + 1, position.z]} onClick={(e) => { e.stopPropagation(); onClick?.(); }}>
       <mesh>
         <coneGeometry args={[0.15, 0.3, 4]} />
-        <meshBasicMaterial color={color} />
+        <meshBasicMaterial color={color} map={fleetTexture ?? null} />
       </mesh>
       <mesh position={[0, -0.25, 0]}>
         <sphereGeometry args={[0.06, 6, 6]} />

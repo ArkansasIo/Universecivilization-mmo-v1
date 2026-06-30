@@ -13,6 +13,7 @@ const TRANSITION_DURATION = 1.2;
 
 export default function CameraController({ level, target, onLevelChange }: CameraControllerProps) {
   const { camera, gl } = useThree();
+  const perspectiveCamera = camera as THREE.PerspectiveCamera;
   const stateRef = useRef({
     progress: 1,
     startPos: new THREE.Vector3(),
@@ -72,7 +73,7 @@ export default function CameraController({ level, target, onLevelChange }: Camer
     const s = stateRef.current;
     s.startPos.copy(camera.position);
     s.startTarget.copy(currentTargetRef.current);
-    s.startFov = camera.fov;
+    s.startFov = perspectiveCamera.fov;
     s.progress = 0;
     s.isTransitioning = true;
     s.level = newLevel;
@@ -90,7 +91,7 @@ export default function CameraController({ level, target, onLevelChange }: Camer
     s.endPos.copy(endPos);
     s.endTarget.copy(newTarget);
     s.endFov = cfg.fov;
-  }, [camera]);
+  }, [camera, perspectiveCamera]);
 
   useEffect(() => {
     if (target) {
@@ -110,9 +111,9 @@ export default function CameraController({ level, target, onLevelChange }: Camer
       const t = smoothstep(s.progress);
       camera.position.lerpVectors(s.startPos, s.endPos, t);
       currentTargetRef.current.lerpVectors(s.startTarget, s.endTarget, t);
-      camera.fov = s.startFov + (s.endFov - s.startFov) * t;
+      perspectiveCamera.fov = s.startFov + (s.endFov - s.startFov) * t;
       camera.lookAt(currentTargetRef.current);
-      camera.updateProjectionMatrix();
+      perspectiveCamera.updateProjectionMatrix();
       return;
     }
 
@@ -130,7 +131,7 @@ export default function CameraController({ level, target, onLevelChange }: Camer
     camera.position.lerp(desired, 0.08);
     currentTargetRef.current.lerp(targetPt, 0.08);
     camera.lookAt(currentTargetRef.current);
-    camera.updateProjectionMatrix();
+    perspectiveCamera.updateProjectionMatrix();
   });
 
   return null;

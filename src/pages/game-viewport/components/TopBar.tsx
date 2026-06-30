@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useResources } from '../../../hooks/useResources';
@@ -6,6 +6,7 @@ import { useGameTime } from '../../../hooks/useGameTime';
 import { useViewport } from '../../../components/feature/ViewportControls';
 import { useCameraState } from './camera/CameraStateProvider';
 import { useSelection } from './selection/SelectionContext';
+import SoundControls from './SoundControls';
 
 const RESOURCE_DEFS = [
   { key: 'metal', label: 'Metal', icon: 'ri-copper-coin-line', color: '#d4a853' },
@@ -32,6 +33,7 @@ export default function TopBar() {
   const { selected } = useSelection();
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showSoundPanel, setShowSoundPanel] = useState(false);
 
   const handleLogout = async () => {
     try { await signOut(); } catch { /* ignore */ }
@@ -95,7 +97,7 @@ export default function TopBar() {
           <span className="text-xs opacity-60" style={{ color: '#5a6577' }}>Loading resources...</span>
         ) : (
           RESOURCE_DEFS.map((r) => {
-            const val = (resources as Record<string, number>)[r.key];
+            const val = (resources as unknown as Record<string, number>)[r.key];
             return (
               <div
                 key={r.key}
@@ -165,6 +167,21 @@ export default function TopBar() {
         <Link to="/research" className="w-6 h-6 flex items-center justify-center rounded transition-all hover:bg-white/5" style={{ color: '#5a6577' }} title="Research">
           <i className="ri-test-tube-line text-xs"></i>
         </Link>
+
+        <div className="w-px h-5" style={{ background: '#1e2a36' }}></div>
+
+        {/* Sound controls */}
+        <div className="relative">
+          <button
+            onClick={() => setShowSoundPanel((v) => !v)}
+            className="w-6 h-6 flex items-center justify-center rounded transition-all hover:bg-white/5 sound-controls-trigger"
+            style={{ color: '#5a6577' }}
+            title="Sound Settings"
+          >
+            <i className="ri-volume-up-line text-xs"></i>
+          </button>
+          <SoundControls open={showSoundPanel} onClose={() => setShowSoundPanel(false)} />
+        </div>
 
         <div className="w-px h-5" style={{ background: '#1e2a36' }}></div>
 

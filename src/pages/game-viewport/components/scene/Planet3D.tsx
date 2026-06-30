@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useRegisteredTexture } from '../../../../engine';
 
 interface Planet3DProps {
   radius: number;
@@ -14,6 +15,7 @@ interface Planet3DProps {
 export default function Planet3D({ radius, color, orbitRadius, orbitSpeed, onClick, isSelected }: Planet3DProps) {
   const groupRef = useRef<THREE.Group>(null);
   const angleRef = useRef(Math.random() * Math.PI * 2);
+  const { data: surfaceTexture } = useRegisteredTexture('texture.planet.surface');
 
   useFrame((_, delta) => {
     if (!groupRef.current) return;
@@ -34,7 +36,12 @@ export default function Planet3D({ radius, color, orbitRadius, orbitSpeed, onCli
 
       <mesh onClick={(e) => { e.stopPropagation(); onClick(); }}>
         <sphereGeometry args={[radius, 12, 12]} />
-        <meshStandardMaterial color={color} metalness={0.3} roughness={0.7} />
+        <meshStandardMaterial
+          color={color}
+          map={surfaceTexture ?? null}
+          metalness={0.3}
+          roughness={0.7}
+        />
       </mesh>
 
       <mesh>
