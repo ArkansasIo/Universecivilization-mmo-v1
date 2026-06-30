@@ -1,0 +1,232 @@
+import SkillTreeLayout from '../components/SkillTreeLayout';
+import { SkillNode } from '../components/SkillTreeNode';
+
+const COLOR = '#38bdf8';
+
+const TIER1: SkillNode[] = [
+  {
+    id: 'as_plate_basics',
+    name: 'Plate Basics',
+    icon: 'ri-shield-line',
+    description: 'Learn the foundations of shaping and fitting heavy armor plates.',
+    passiveBonus: 'Increases base armor defense rating on all crafted armor',
+    bonusPerLevel: '+3% defense rating',
+    maxLevel: 5,
+    currentLevel: 0,
+    tier: 1,
+    color: COLOR,
+    cost: { skillPoints: 1, credits: 500 },
+  },
+  {
+    id: 'as_padding_mastery',
+    name: 'Padding Mastery',
+    icon: 'ri-heart-pulse-line',
+    description: 'Optimize internal padding layers to absorb kinetic impact.',
+    passiveBonus: 'Reduces impact damage received when wearing crafted armor',
+    bonusPerLevel: '-2% impact damage taken',
+    maxLevel: 5,
+    currentLevel: 0,
+    tier: 1,
+    color: COLOR,
+    cost: { skillPoints: 1, credits: 450 },
+  },
+  {
+    id: 'as_lightweight_frame',
+    name: 'Lightweight Frame',
+    icon: 'ri-run-line',
+    description: 'Design armor structures that minimize weight without sacrificing protection.',
+    passiveBonus: 'Reduces movement penalty imposed by crafted heavy armor',
+    bonusPerLevel: '-4% movement penalty',
+    maxLevel: 5,
+    currentLevel: 0,
+    tier: 1,
+    color: COLOR,
+    cost: { skillPoints: 1, credits: 450 },
+  },
+  {
+    id: 'as_joint_sealing',
+    name: 'Joint Sealing',
+    icon: 'ri-links-line',
+    description: 'Perfect the articulation points to prevent energy leaks and weak spots.',
+    passiveBonus: 'Reduces weak-point hit bonus damage on crafted armor',
+    bonusPerLevel: '-3% weak spot damage multiplier',
+    maxLevel: 5,
+    currentLevel: 0,
+    tier: 1,
+    color: COLOR,
+    cost: { skillPoints: 1, credits: 400 },
+  },
+];
+
+const TIER2: SkillNode[] = [
+  {
+    id: 'as_composite_layers',
+    name: 'Composite Layers',
+    icon: 'ri-stack-line',
+    description: 'Construct multi-material composite plates combining the best of each material.',
+    passiveBonus: 'Crafted armor gains bonus multi-damage-type resistance',
+    bonusPerLevel: '+2% all damage type resistance',
+    maxLevel: 5,
+    currentLevel: 0,
+    requires: ['as_plate_basics'],
+    tier: 2,
+    color: '#a78bfa',
+    cost: { skillPoints: 2, credits: 1300 },
+    unlocks: 'Composite Plate armor set recipes',
+  },
+  {
+    id: 'as_energy_lining',
+    name: 'Energy Lining',
+    icon: 'ri-flashlight-line',
+    description: 'Weave energy-absorbing fiber lattices into armor interiors.',
+    passiveBonus: 'Crafted armor gains energy/plasma damage absorption',
+    bonusPerLevel: '+4% energy damage absorption',
+    maxLevel: 5,
+    currentLevel: 0,
+    requires: ['as_padding_mastery'],
+    tier: 2,
+    color: '#a78bfa',
+    cost: { skillPoints: 2, credits: 1200 },
+  },
+  {
+    id: 'as_servo_assist',
+    name: 'Servo Assist',
+    icon: 'ri-robot-line',
+    description: 'Embed micro-servo motors to compensate for heavy armor weight.',
+    passiveBonus: 'Eliminates agility penalty from crafted medium and heavy armor',
+    bonusPerLevel: '-5% agility penalty per level',
+    maxLevel: 5,
+    currentLevel: 0,
+    requires: ['as_lightweight_frame'],
+    tier: 2,
+    color: '#a78bfa',
+    cost: { skillPoints: 2, credits: 1300 },
+  },
+  {
+    id: 'as_reactive_plates',
+    name: 'Reactive Plates',
+    icon: 'ri-shield-cross-line',
+    description: 'Install explosive reactive panels that counter incoming projectiles.',
+    passiveBonus: 'Chance to negate projectile hits on crafted armor',
+    bonusPerLevel: '+3% projectile negation chance',
+    maxLevel: 5,
+    currentLevel: 0,
+    requires: ['as_joint_sealing'],
+    tier: 2,
+    color: '#a78bfa',
+    cost: { skillPoints: 2, credits: 1200 },
+  },
+];
+
+const TIER3: SkillNode[] = [
+  {
+    id: 'as_void_weave',
+    name: 'Void Weave',
+    icon: 'ri-focus-2-line',
+    description: 'Weave void-matter fibers that distort incoming attack trajectories.',
+    passiveBonus: 'Grants crafted armor a deflection chance vs melee attacks',
+    bonusPerLevel: '+4% melee deflection chance',
+    maxLevel: 5,
+    currentLevel: 0,
+    requires: ['as_composite_layers', 'as_energy_lining'],
+    tier: 3,
+    color: '#60a5fa',
+    cost: { skillPoints: 3, credits: 2800 },
+    unlocks: 'Void Weave Armor tier',
+  },
+  {
+    id: 'as_self_repair',
+    name: 'Self-Repair',
+    icon: 'ri-refresh-line',
+    description: 'Embed nanite repair modules into armor plates for autonomous damage repair.',
+    passiveBonus: 'Crafted armor regenerates a portion of HP between battles',
+    bonusPerLevel: '+2% HP regeneration per combat encounter',
+    maxLevel: 5,
+    currentLevel: 0,
+    requires: ['as_servo_assist', 'as_reactive_plates'],
+    tier: 3,
+    color: '#60a5fa',
+    cost: { skillPoints: 3, credits: 2600 },
+  },
+  {
+    id: 'as_biosuit_int',
+    name: 'Biosuit Synth',
+    icon: 'ri-body-scan-line',
+    description: 'Synthesize biological and mechanical elements for maximum adaptability.',
+    passiveBonus: 'Crafted bio-armor adapts to environment, giving conditional bonuses',
+    bonusPerLevel: '+5% situational bonus (terrain/environment)',
+    maxLevel: 4,
+    currentLevel: 0,
+    requires: ['as_energy_lining'],
+    tier: 3,
+    color: '#60a5fa',
+    cost: { skillPoints: 3, credits: 2400 },
+  },
+];
+
+const TIER4: SkillNode[] = [
+  {
+    id: 'as_fortress_plate',
+    name: 'Fortress Plate',
+    icon: 'ri-building-4-line',
+    description: 'Engineer near-indestructible armor sets using fortress-grade materials.',
+    passiveBonus: 'Crafted armor gains massively increased max HP',
+    bonusPerLevel: '+8% armor HP',
+    maxLevel: 5,
+    currentLevel: 0,
+    requires: ['as_void_weave', 'as_self_repair'],
+    tier: 4,
+    color: '#c084fc',
+    cost: { skillPoints: 4, credits: 6000 },
+    unlocks: 'Fortress-class armor blueprints',
+  },
+  {
+    id: 'as_stealth_weave',
+    name: 'Stealth Weave',
+    icon: 'ri-eye-off-line',
+    description: 'Craft armor that bends light, providing partial optical camouflage.',
+    passiveBonus: 'Reduces enemy detection range when wearing crafted armor',
+    bonusPerLevel: '-5% enemy detection range',
+    maxLevel: 4,
+    currentLevel: 0,
+    requires: ['as_biosuit_int', 'as_void_weave'],
+    tier: 4,
+    color: '#c084fc',
+    cost: { skillPoints: 4, credits: 5500 },
+  },
+];
+
+const TIER5: SkillNode[] = [
+  {
+    id: 'as_celestial_plate',
+    name: 'Celestial Plate',
+    icon: 'ri-vip-crown-line',
+    description: 'Forge armor of celestial quality — worn by the greatest warriors in the galaxy.',
+    passiveBonus: 'All armorsmithing skill bonuses are amplified across the board',
+    bonusPerLevel: '+10% multiplier to all armorsmithing passive bonuses',
+    maxLevel: 3,
+    currentLevel: 0,
+    requires: ['as_fortress_plate', 'as_stealth_weave'],
+    tier: 5,
+    color: '#fbbf24',
+    cost: { skillPoints: 5, credits: 14000 },
+    unlocks: 'Celestial Armor set — requires Grandmaster Armorsmith',
+  },
+];
+
+const TIERS = [TIER1, TIER2, TIER3, TIER4, TIER5];
+
+export default function ArmorsmithingPage() {
+  return (
+    <SkillTreeLayout
+      treeId="armorsmithing"
+      treeName="Armorsmithing"
+      treeIcon="ri-shield-star-line"
+      treeColor={COLOR}
+      treeDescription="Perfect the craft of defensive armor creation — from layered composites to void-woven celestial plate. Every tier unlocks new defensive mechanics and passive bonuses for your crafted gear."
+      tiers={TIERS}
+      tierLabels={['Apprentice', 'Journeyman', 'Expert', 'Master', 'Grandmaster']}
+      loreText="A shield is not just metal — it is the will to endure, forged into form."
+    />
+  );
+}
