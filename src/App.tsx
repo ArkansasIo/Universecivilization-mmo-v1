@@ -8,6 +8,7 @@ import GameLoop from './components/feature/GameLoop';
 import { Suspense, useEffect } from 'react';
 import ErrorBoundary from './components/feature/ErrorBoundary';
 import { ThemeProvider } from '@/hooks/useTheme';
+import PageLoading from './components/PageLoading';
 
 function App() {
   useEffect(() => {
@@ -53,13 +54,11 @@ function App() {
               <div className="min-h-screen bg-background-50">
                 <GameLoop />
                 <Suspense fallback={
-                  <div className="min-h-screen bg-background-50 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-500 mb-4"></div>
-                      <div className="text-primary-500 text-xl font-heading">Loading...</div>
-                      <p className="text-foreground-700 text-sm mt-2">Preparing command interface</p>
-                    </div>
-                  </div>
+                  <PageLoading
+                    message="Loading..."
+                    subtitle="Preparing command interface"
+                    className="min-h-screen bg-background-50 text-primary-500"
+                  />
                 }>
                   <AppRoutes />
                 </Suspense>

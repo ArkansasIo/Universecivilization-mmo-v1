@@ -369,7 +369,7 @@ export function useGameEventSystem() {
     initialEvents.forEach((template, i) => {
       setTimeout(() => addEvent(template), i * 500);
     });
-  }, []);
+  }, [addEvent]);
 
   // Fleet arrival detection
   useEffect(() => {

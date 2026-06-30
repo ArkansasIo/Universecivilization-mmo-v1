@@ -100,8 +100,6 @@ const EMPIRE_COLORS = [
   '#f472b6', '#34d399', '#fb923c', '#60a5fa', '#e879f9',
 ];
 
-const RANKS: EmpireRank[] = ['Iron', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Mythic', 'Cosmic'];
-
 function getRankByPoints(points: number): EmpireRank {
   if (points >= 10000000) return 'Cosmic';
   if (points >= 5000000) return 'Mythic';

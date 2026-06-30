@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useBlackMarket } from '../../hooks/useBlackMarket';
+import PageLoading from '@/components/PageLoading';
 
 export default function BlackMarketPage() {
   const { items, myListings, loading, createListing, buyItem, cancelListing } = useBlackMarket();
   const [activeTab, setActiveTab] = useState<'buy' | 'sell' | 'my-listings'>('buy');
   const [selectedRarity, setSelectedRarity] = useState<string>('all');
   const [selectedType, setSelectedType] = useState<string>('all');
-  const [showCreateModal, setShowCreateModal] = useState(false);
-
   const [newListing, setNewListing] = useState({
     itemType: 'artifact',
     itemName: '',
@@ -98,13 +97,7 @@ export default function BlackMarketPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex h-screen bg-gray-900">
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-white text-xl">Loading Black Market...</div>
-        </div>
-      </div>
-    );
+    return <PageLoading message="Loading Black Market..." className="h-screen bg-gray-900 text-white" />;
   }
 
   return (

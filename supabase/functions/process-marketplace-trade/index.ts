@@ -45,7 +45,7 @@ Deno.serve(async (req) => {
     );
   }
 
-  let body: any;
+  let body: unknown;
   try {
     body = await req.json();
   } catch {
@@ -55,7 +55,7 @@ Deno.serve(async (req) => {
     );
   }
 
-  const { listing_id, quantity: requestedQuantity } = body;
+  const { listing_id, quantity: requestedQuantity } = body as { listing_id?: string; quantity?: number };
 
   if (!listing_id) {
     return new Response(
@@ -155,7 +155,7 @@ Deno.serve(async (req) => {
     }
 
     // 4. Fetch seller resources (for credit deposit)
-    const { data: sellerResources, error: sellerError } = await adminClient
+    const { data: sellerResources } = await adminClient
       .from("player_resources")
       .select("imperial_credits, republic_credits")
       .eq("player_id", listing.seller_id)
@@ -166,14 +166,14 @@ Deno.serve(async (req) => {
 
     // Update buyer: deduct credits, add resources
     const resourceField = listing.resource_type; // metal, crystal, deuterium, etc.
-    const buyerUpdate: Record<string, any> = {
+    const buyerUpdate: Record<string, unknown> = {
       updated_at: now,
     };
     buyerUpdate[currencyField] = buyerBalance - totalCost;
 
     // Add purchased resource to buyer
     if (["metal", "crystal", "deuterium", "energy", "dark_matter", "antimatter", "nanites"].includes(resourceField)) {
-      const currentResource = (buyerResources as any)[resourceField] || 0;
+      const currentResource = (buyerResources as Record<string, unknown>)[resourceField] as number || 0;
       buyerUpdate[resourceField] = currentResource + quantity;
     }
 
@@ -186,7 +186,7 @@ Deno.serve(async (req) => {
 
     // Update seller: add credits
     if (sellerResources && listing.seller_id) {
-      const sellerUpdate: Record<string, any> = {
+      const sellerUpdate: Record<string, unknown> = {
         updated_at: now,
       };
       if (currencyField === "republic_credits") {
@@ -264,10 +264,11 @@ Deno.serve(async (req) => {
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Marketplace trade error:", err);
+    const msg = err instanceof Error ? err.message : String(err);
     return new Response(
-      JSON.stringify({ error: err?.message || "Failed to process marketplace trade" }),
+      JSON.stringify({ error: msg }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

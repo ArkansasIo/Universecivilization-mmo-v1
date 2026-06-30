@@ -44,7 +44,7 @@ export const useResearchManager = () => {
     technologyName: string,
     currentLevel: number,
     researchTime: number,
-    cost: { metal: number; crystal: number; deuterium?: number }
+    _cost: { metal: number; crystal: number; deuterium?: number }
   ): Promise<{ success: boolean; error?: string }> => {
     if (!user) return { success: false, error: 'Not authenticated' };
     if (activeResearch) return { success: false, error: 'Already researching another technology' };

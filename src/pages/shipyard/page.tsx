@@ -36,7 +36,7 @@ const BORDER = '#1e2a36';
 export default function ShipyardPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [ships, setShips] = useState<Ship[]>([]);
+  const [ships] = useState<Ship[]>([]);
   const [buildQueue, setBuildQueue] = useState<BuildQueue[]>([]);
   const [selectedShip, setSelectedShip] = useState<Ship | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -181,6 +181,28 @@ export default function ShipyardPage() {
     { id: 'col', name: 'Colony Ship', type: 'Special', description: 'Carries colonists to establish new planetary settlements.', attack: 50, defense: 100, speed: 2500, cargo: 7500, metal_cost: 10000, crystal_cost: 20000, deuterium_cost: 10000, build_time: 120 },
     { id: 'rec', name: 'Recycler', type: 'Special', description: 'Salvage vessel that collects debris fields after battles.', attack: 1, defense: 10, speed: 2000, cargo: 20000, metal_cost: 10000, crystal_cost: 6000, deuterium_cost: 2000, build_time: 25 },
   ];
+  const shipCatalog = ships.length > 0 ? ships : mockShips;
+  const queuedUnits = buildQueue.reduce((sum, item) => sum + item.quantity, 0);
+  const queuedMinutes = buildQueue.reduce((sum, item) => {
+    const remaining = Math.max(0, Math.ceil((new Date(item.completion_time).getTime() - Date.now()) / 60000));
+    return sum + remaining;
+  }, 0);
+  const selectedBatchMinutes = selectedShip ? selectedShip.build_time * quantity : 0;
+  const selectedBatchCost = selectedShip
+    ? selectedShip.metal_cost * quantity + selectedShip.crystal_cost * quantity + selectedShip.deuterium_cost * quantity
+    : 0;
+  const factorySystems = [
+    { name: 'Orbital Drydock', value: `${shipCatalog.length} hulls`, detail: 'Available construction patterns', icon: 'ri-rocket-2-line', color: '#5bc0be', path: '/starships' },
+    { name: 'Robotics Factory', value: 'Upgrade', detail: 'Shortens planetary construction cycles', icon: 'ri-robot-line', color: '#34d399', path: '/buildings' },
+    { name: 'Nanite Foundry', value: 'Boost', detail: 'Compresses ship and facility build time', icon: 'ri-cpu-line', color: '#a78bfa', path: '/buildings' },
+    { name: 'Power Grid', value: 'Supply', detail: 'Keeps assembly arms and docks online', icon: 'ri-flashlight-line', color: '#e2c044', path: '/power-grid' },
+  ];
+  const buildLanes = [
+    { label: 'Queue Load', value: `${buildQueue.length}/6`, helper: `${queuedUnits} units staged`, icon: 'ri-stack-line', color: '#d4a853' },
+    { label: 'Assembly Time', value: `${queuedMinutes}m`, helper: 'Remaining dock time', icon: 'ri-time-line', color: '#f87171' },
+    { label: 'Batch Cost', value: selectedBatchCost ? `${Math.round(selectedBatchCost / 1000)}K` : 'Select', helper: 'Current order estimate', icon: 'ri-coins-line', color: '#7bc67e' },
+    { label: 'Batch Cycle', value: selectedBatchMinutes ? `${selectedBatchMinutes}m` : 'Idle', helper: selectedShip?.name || 'No blueprint selected', icon: 'ri-loop-right-line', color: '#a78bfa' },
+  ];
 
   return (
     <div className="text-white">
@@ -218,9 +240,60 @@ export default function ShipyardPage() {
         </div>
       </div>
 
-      <div className="px-6 py-6">
+      <div className="px-4 py-5 sm:px-6 sm:py-6">
+        <div className="mb-5 grid grid-cols-1 gap-3 xl:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.018)', border: `1px solid ${BORDER}` }}>
+            <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest" style={{ color: GOLD }}>Factory Systems</p>
+                <h2 className="text-xl font-black text-white">Starship Construction Yard</h2>
+              </div>
+              <div className="flex items-center gap-2 rounded-lg px-3 py-2" style={{ background: 'rgba(91,192,190,0.08)', border: '1px solid rgba(91,192,190,0.2)' }}>
+                <span className="h-2 w-2 rounded-full bg-[#34d399] animate-pulse" />
+                <span className="text-xs font-bold text-[#5bc0be]">ASSEMBLY NETWORK ONLINE</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+              {factorySystems.map(system => (
+                <button
+                  key={system.name}
+                  type="button"
+                  onClick={() => navigate(system.path)}
+                  className="rounded-lg p-3 text-left transition hover:brightness-125"
+                  style={{ background: `${system.color}08`, border: `1px solid ${system.color}22` }}
+                >
+                  <div className="mb-3 flex items-center justify-between gap-2">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg" style={{ background: `${system.color}14` }}>
+                      <i className={`${system.icon} text-lg`} style={{ color: system.color }} />
+                    </div>
+                    <span className="text-xs font-black" style={{ color: system.color }}>{system.value}</span>
+                  </div>
+                  <p className="text-sm font-bold text-white">{system.name}</p>
+                  <p className="mt-1 text-xs leading-5 text-ogame-muted">{system.detail}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-xl p-4" style={{ background: 'rgba(8,11,15,0.92)', border: `1px solid ${BORDER}` }}>
+            <p className="mb-3 text-xs font-bold uppercase tracking-widest" style={{ color: '#5a6577' }}>Production Control</p>
+            <div className="grid grid-cols-2 gap-2">
+              {buildLanes.map(lane => (
+                <div key={lane.label} className="rounded-lg p-3" style={{ background: `${lane.color}07`, border: `1px solid ${lane.color}18` }}>
+                  <div className="mb-2 flex items-center gap-2 text-xs font-bold" style={{ color: lane.color }}>
+                    <i className={lane.icon} />
+                    {lane.label}
+                  </div>
+                  <div className="text-lg font-black text-white">{lane.value}</div>
+                  <div className="mt-1 truncate text-xs text-ogame-dim">{lane.helper}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Ship type overview */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-1 gap-3 mb-6 md:grid-cols-3">
           {[
             { type: 'Combat', desc: 'Attack and defend your empire', icon: 'ri-sword-line', color: '#f87171', ships: ['Light Fighter', 'Heavy Fighter', 'Cruiser', 'Battleship'] },
             { type: 'Transport', desc: 'Move resources across the galaxy', icon: 'ri-truck-line', color: '#34d399', ships: ['Small Cargo', 'Large Cargo'] },
@@ -285,12 +358,17 @@ export default function ShipyardPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
           {/* Ship List */}
-          <div className="col-span-8">
-            <h2 className="text-base font-bold text-white mb-4">Available Ships</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {(ships.length > 0 ? ships : mockShips).map((ship) => {
+          <div className="xl:col-span-8">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <h2 className="text-base font-bold text-white">Available Ships</h2>
+              <span className="rounded-full px-3 py-1 text-xs font-bold" style={{ background: 'rgba(91,192,190,0.1)', color: '#5bc0be', border: '1px solid rgba(91,192,190,0.2)' }}>
+                {shipCatalog.length} blueprints
+              </span>
+            </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {shipCatalog.map((ship) => {
                 const art = getShipArt(ship.name);
                 const isSelected = selectedShip?.id === ship.id;
                 const typeColor = ship.type === 'Combat' ? 'text-red-400 bg-red-500/10' : ship.type === 'Transport' ? 'text-green-400 bg-green-500/10' : 'text-purple-400 bg-purple-500/10';
@@ -350,7 +428,7 @@ export default function ShipyardPage() {
           </div>
 
           {/* Build Panel */}
-          <div className="col-span-4">
+          <div className="xl:col-span-4">
             <div className="rounded-xl overflow-hidden sticky top-24" style={{ background: CARD_BG, border: `1px solid ${BORDER}` }}>
               {selectedShip ? (
                 <>

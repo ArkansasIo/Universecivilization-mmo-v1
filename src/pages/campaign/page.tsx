@@ -249,7 +249,7 @@ export default function CampaignPage() {
   const [missions, setMissions] = useState<Mission[]>(ALL_MISSIONS);
   const [selected, setSelected] = useState<Mission>(ALL_MISSIONS[0]);
   const [battlePhase, setBattlePhase] = useState<BattlePhase>('idle');
-  const [battleLog, setBattleLog] = useState<string[]>([]);
+  const [, setBattleLog] = useState<string[]>([]);
   const [logVisible, setLogVisible] = useState<string[]>([]);
   const [victory, setVictory] = useState<boolean | null>(null);
   const [playerLevel] = useState(5);

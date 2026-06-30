@@ -147,7 +147,6 @@ export const useAchievementSystem = () => {
     // Already fully completed — skip
     if (existing?.is_completed) return false;
 
-    const prevProgress = existing?.progress ?? 0;
     const clampedProgress = Math.min(newProgress, maxProgress);
     const nowCompleted = clampedProgress >= maxProgress;
     const justUnlocked = nowCompleted && !existing?.is_completed;

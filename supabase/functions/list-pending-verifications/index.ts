@@ -74,9 +74,9 @@ Deno.serve(async (req) => {
         },
       },
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     return new Response(
-      JSON.stringify({ success: false, error: err.message || 'Internal server error.' }),
+      JSON.stringify({ success: false, error: err instanceof Error ? err.message : String(err) }),
       {
         status: 500,
         headers: {

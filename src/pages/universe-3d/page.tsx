@@ -1,15 +1,12 @@
 import { useState, useRef, useMemo, useCallback, useEffect, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Stars, Text, Html, PerspectiveCamera, Line } from '@react-three/drei';
-import { EffectComposer, Bloom, Vignette, Noise } from '@react-three/postprocessing';
-import { supabase } from '@/lib/supabase';
+import { OrbitControls, Html } from '@react-three/drei';
+import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import * as THREE from 'three';
 import SystemView3D, { type PlanetConfig } from './components/SystemView3D';
 import TerritoryMesh3D, { type TerritoryData } from './components/TerritoryMesh3D';
 import AnomalyNode3D from './components/AnomalyNode3D';
-import { useStellarisAnomalies, type StellarisAnomaly, type AnomalyCategory, type AnomalyDifficulty } from '@/hooks/useStellarisAnomalies';
-import AnomalyInvestigationModal from '@/pages/stellaris-view/components/AnomalyInvestigationModal';
 
 // ────────────────────────────────────────────────────────────
 // TYPES
@@ -79,7 +76,6 @@ function CinematicCamera({
   onInterrupt: () => void;
 }) {
   const { camera, gl } = useThree();
-  const controlsRef = useRef<any>(null);
   const progressRef = useRef(0);
   const startTimeRef = useRef(0);
   const startPosRef = useRef(new THREE.Vector3());
@@ -620,7 +616,7 @@ function SpiralGalaxy({ data, onClick }: { data: GalaxyData; onClick: (g: Galaxy
         const scatter = (1 - t) * 0.3 + Math.random() * 0.7;
 
         let px = Math.cos(spiralAngle) * radius + (Math.random() - 0.5) * scatter * data.size * 0.15;
-        let py = (Math.random() - 0.5) * scatter * 0.06 * data.size;
+        const py = (Math.random() - 0.5) * scatter * 0.06 * data.size;
         let pz = Math.sin(spiralAngle) * radius + (Math.random() - 0.5) * scatter * data.size * 0.15;
 
         // Bar for barred-spiral

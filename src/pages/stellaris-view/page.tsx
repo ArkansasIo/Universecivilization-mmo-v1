@@ -104,8 +104,6 @@ function StarNode({
   const starColor = STAR_COLORS[sys.starClass];
   const baseSize = Math.max(4, sys.starSize * Math.min(scale, 1.5));
   const isWarZone = sys.status === 'war_zone';
-  const isContested = sys.status === 'contested';
-
   return (
     <div
       className="absolute select-none"
@@ -1090,11 +1088,6 @@ export default function StellarisViewPage() {
     strategic: 'radial-gradient(ellipse at 50% 50%, rgba(5,15,10,1) 0%, rgba(2,5,8,1) 100%)',
     economic:  'radial-gradient(ellipse at 50% 20%, rgba(15,12,5,1) 0%, rgba(5,4,2,1) 100%)',
   };
-
-  const scaledMapW = MAP_W * scale;
-  const scaledMapH = MAP_H * scale;
-
-  const rightPanelOpen = selectedEmpire !== null;
 
   return (
     <div className="fixed inset-0 flex flex-col overflow-hidden" style={{ background: '#020508', zIndex: 0 }}>

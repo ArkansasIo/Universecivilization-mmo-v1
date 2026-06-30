@@ -3,11 +3,7 @@
 // Runtime-usable effect definitions mapped to ship stat modifications
 // ═══════════════════════════════════════════════════════════════════════════
 
-import {
-  BuffType, DebuffType,
-  BUFF_SUB_TYPES, DEBUFF_SUB_TYPES,
-  TECH_SUB_STATS, TechStat,
-} from '../config/starshipTechTree';
+import { BuffType, DebuffType } from '../config/starshipTechTree';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SHIP STAT MODIFIER — links a buff/debuff to a specific ship stat

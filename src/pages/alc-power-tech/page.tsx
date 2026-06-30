@@ -8,7 +8,6 @@ import {
   ALC_TIER_RANGES,
   getAlcTechCost,
   getAlcTechTime,
-  getAlcTechsByTier,
   type AlcTechCategory,
   type AlcTechDef,
 } from '@/config/alcPowerTechTree';
@@ -182,7 +181,6 @@ function TechCard({
 
 export default function AlcPowerTechPage() {
   const {
-    research,
     activeResearch,
     loading,
     getTechLevel,

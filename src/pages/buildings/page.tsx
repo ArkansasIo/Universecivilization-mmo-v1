@@ -64,7 +64,7 @@ export default function BuildingsPage() {
   const [error, setError] = useState<string | null>(null);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
   const [upgrading, setUpgrading] = useState<string | null>(null);
-  const [tick, setTick] = useState(0);
+  const [, setTick] = useState(0);
 
   const { queue, addToQueue, cancelBuilding } = useBuildingQueue(planetId);
 

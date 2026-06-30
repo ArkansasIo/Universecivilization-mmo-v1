@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
 interface PirateFleet {
@@ -75,9 +75,9 @@ export const usePirateSystem = (playerId: string) => {
     };
 
     initializeData();
-  }, [playerId]);
+  }, [playerId, generatePirateFleets, loadActiveHunts, loadReputation]);
 
-  const generatePirateFleets = async () => {
+  const generatePirateFleets = useCallback(async () => {
     try {
       setError(null);
       const fleets: PirateFleet[] = [];
@@ -154,9 +154,9 @@ export const usePirateSystem = (playerId: string) => {
       console.error('Error generating pirate fleets:', err);
       throw err;
     }
-  };
+  }, [playerId]);
 
-  const loadActiveHunts = async () => {
+  const loadActiveHunts = useCallback(async () => {
     try {
       setError(null);
       const { data, error } = await supabase
@@ -186,9 +186,9 @@ export const usePirateSystem = (playerId: string) => {
       setError('Failed to load active hunts');
       console.error('Error loading active hunts:', error);
     }
-  };
+  }, [playerId]);
 
-  const loadReputation = async () => {
+  const loadReputation = useCallback(async () => {
     try {
       setError(null);
       const { data, error } = await supabase
@@ -216,7 +216,7 @@ export const usePirateSystem = (playerId: string) => {
       setError('Failed to load reputation');
       console.error('Error loading reputation:', error);
     }
-  };
+  }, [playerId]);
 
   const huntPirates = async (pirateFleetId: string, playerFleetId: string) => {
     try {

@@ -175,7 +175,7 @@ Deno.serve(async (req) => {
     }
 
     // Fetch buildings
-    const planetIds = planets.map((p: any) => p.id);
+    const planetIds = planets.map((p: { id: string }) => p.id);
     const { data: buildings, error: bldError } = await adminClient
       .from("buildings")
       .select("building_type, level")

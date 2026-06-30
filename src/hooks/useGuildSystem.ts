@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
 export interface Guild {
@@ -93,9 +93,9 @@ export const useGuildSystem = (playerId: string) => {
     if (playerId) {
       loadGuildData();
     }
-  }, [playerId]);
+  }, [playerId, loadGuildData]);
 
-  const loadGuildData = async () => {
+  const loadGuildData = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -160,7 +160,7 @@ export const useGuildSystem = (playerId: string) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [playerId]);
 
   const createGuild = async (name: string, tag: string, description: string) => {
     try {

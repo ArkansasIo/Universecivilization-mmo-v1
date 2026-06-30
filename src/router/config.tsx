@@ -282,4 +282,4 @@ const routes: RouteObject[] = [
   { path: '*', element: <NotFound /> },
 ];
 
-export default routes;
+export { routes };

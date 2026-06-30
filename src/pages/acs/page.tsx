@@ -173,7 +173,7 @@ export default function ACSPage() {
     showToast('Your fleet has been recalled from the ACS mission.');
   };
 
-  const handleJoin = (missionId: string) => {
+  const handleJoin = () => {
     showToast('Fleet dispatch window opened — select ships to join ACS mission.');
   };
 
@@ -317,7 +317,7 @@ export default function ACSPage() {
                 {/* Join button for forming missions */}
                 {mission.status === 'forming' && (
                   <button
-                    onClick={() => handleJoin(mission.id)}
+                    onClick={() => handleJoin()}
                     className="mt-3 w-full py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap"
                     style={{ background: `${missionColor}12`, color: missionColor, border: `1px solid ${missionColor}30` }}
                   ><i className="ri-add-circle-line mr-1"></i>Join This Mission</button>

@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
 import {
-  PlanetClassLetter, PlanetCategory, HabitabilityRating,
+  PlanetClassLetter, PlanetCategory,
   PLANET_CLASS_LETTER_NAMES, PLANET_CLASS_LETTER_COLORS,
-  PLANET_CLASS_DESCRIPTIONS, PLANET_CATEGORIES, PLANET_SUB_CATEGORIES,
   getHabitabilityRating,
 } from '../../types/gameTypes';
 
@@ -191,11 +190,7 @@ export default function ColoniesPage() {
   );
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading colonies...</div>
-      </div>
-    );
+    return <PageLoading message="Loading colonies..." className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white" />;
   }
 
   return (

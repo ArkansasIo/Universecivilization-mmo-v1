@@ -43,10 +43,10 @@ Deno.serve(async (req) => {
       JSON.stringify({ exists: (adminUsers?.length ?? 0) > 0 }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Check admin exists error:', err);
     return new Response(
-      JSON.stringify({ exists: false, error: err?.message || 'Unexpected error' }),
+      JSON.stringify({ exists: false, error: err instanceof Error ? err.message : String(err) }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

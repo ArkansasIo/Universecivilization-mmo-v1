@@ -17,7 +17,7 @@ const AchievementToastContainer = lazy(() => import('./AchievementToast'));
 ───────────────────────────────────────────── */
 interface SidebarCtx { collapsed: boolean }
 const SidebarContext = createContext<SidebarCtx>({ collapsed: false });
-export const useSidebar = () => useContext(SidebarContext);
+const useSidebar = () => useContext(SidebarContext);
 
 /* ─────────────────────────────────────────────
    NAV DATA TYPES

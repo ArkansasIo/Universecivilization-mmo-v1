@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -36,9 +36,9 @@ export function usePlayerProgression() {
     if (user) {
       loadProgression();
     }
-  }, [user]);
+  }, [user, loadProgression]);
 
-  const loadProgression = async () => {
+  const loadProgression = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -67,7 +67,7 @@ export function usePlayerProgression() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   const calculateExperienceToNext = (level: number): number => {
     return Math.floor(1000 * Math.pow(1.5, level - 1));

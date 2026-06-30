@@ -8,12 +8,12 @@ import {
   getCosmicSummary,
 } from '@/data/cosmicHierarchy';
 import type {
-  UniverseData, GalaxyData, SectorData, SolarSystemData,
+  UniverseData, GalaxyData, SectorData,
 } from '@/types/gameTypes';
 import {
-  QUADRANT_TYPE_DEFINITIONS, GALAXY_CLASS_NAMES, GALAXY_CLASS_COLORS,
-  GALAXY_SUB_CLASSES, SECTOR_TYPE_DEFINITIONS, SECURITY_LEVEL_COLORS,
-  SOLAR_SYSTEM_DEFINITIONS, STAR_CLASS_DEFINITIONS, GALAXY_CLASS_TO_TYPE,
+  GALAXY_CLASS_NAMES, GALAXY_CLASS_COLORS,
+  SECURITY_LEVEL_COLORS,
+  STAR_CLASS_DEFINITIONS,
 } from '@/types/gameTypes';
 
 type ViewLevel = 'universes' | 'galaxies' | 'sectors' | 'systems';
@@ -307,7 +307,6 @@ export default function CosmicHierarchyPage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {pagedSectors.map((sector) => {
-                const secDef = SECTOR_TYPE_DEFINITIONS[sector.sectorType];
                 const secColor = SECURITY_LEVEL_COLORS[sector.securityLevel] || '#888';
                 return (
                   <button
@@ -363,7 +362,6 @@ export default function CosmicHierarchyPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
               {pagedSystems.map((sys) => {
                 const starDef = STAR_CLASS_DEFINITIONS[sys.starType];
-                const sysDef = SOLAR_SYSTEM_DEFINITIONS[sys.systemType];
                 const starColor = starDef?.color || '#FFD700';
                 return (
                   <div key={sys.id} className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-4 hover:border-white/[0.1] transition-all group">

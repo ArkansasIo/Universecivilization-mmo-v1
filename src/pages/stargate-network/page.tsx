@@ -1,8 +1,6 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useResources } from '../../hooks/useResources';
-import { supabase } from '../../lib/supabase';
 
 interface Stargate {
   id: string;
@@ -18,9 +16,8 @@ interface Stargate {
 }
 
 export default function StargateNetworkPage() {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const { resources, deductResources } = useResources();
+  useAuth();
+  const { deductResources } = useResources();
   const [activeTab, setActiveTab] = useState('network');
   const [selectedGate, setSelectedGate] = useState<Stargate | null>(null);
   const [showBuildModal, setShowBuildModal] = useState(false);

@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useUnitSystem } from '../../hooks/useUnitSystem';
 import type { UnitDefinition, UnitCategory } from '../../data/units/types';
-import { JOB_CATEGORY_DESCRIPTIONS, TRAINING_STATUS_LABELS } from '../../data/units/personnel';
+import { JOB_CATEGORY_DESCRIPTIONS } from '../../data/units/personnel';
 import UnitCard from './components/UnitCard';
 import UnitDetails from './components/UnitDetails';
 import TrainingQueue from './components/TrainingQueue';
@@ -67,8 +67,7 @@ export default function UnitsPage() {
   }, [selectedCategory, allSectors]);
 
   const handleTrain = (unitId: string, count: number) => {
-    const result = trainUnits({ unitId, count });
-    // Result is handled in hook with notification
+    trainUnits({ unitId, count });
   };
 
   const handleDeploy = (unit: UnitDefinition) => {
@@ -87,10 +86,6 @@ export default function UnitsPage() {
     military: 'border-red-500 bg-red-500/10 text-red-400',
     government: 'border-amber-500 bg-amber-500/10 text-amber-400',
   };
-
-  const activeTotal = filteredUnits.reduce((s, u) => s + u.available, 0);
-  const trainedCount = filteredUnits.filter(u => u.status === 'trained').reduce((s, u) => s + u.available, 0);
-  const deployedCount = filteredUnits.filter(u => u.status === 'deployed').reduce((s, u) => s + u.available, 0);
 
   return (
     <div className="text-white min-h-screen">

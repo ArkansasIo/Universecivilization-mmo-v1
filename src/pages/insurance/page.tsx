@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useInsuranceSystem } from '../../hooks/useInsuranceSystem';
+import PageLoading from '@/components/PageLoading';
 
 function formatNum(n: number): string {
   if (n >= 1e9) return `${(n / 1e9).toFixed(1)}B`;
@@ -121,14 +122,7 @@ export default function InsuranceBrokerPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center" style={{ minHeight: '60vh' }}>
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-400 mb-4"></div>
-          <p className="text-white/60">Loading Insurance Broker...</p>
-        </div>
-      </div>
-    );
+    return <PageLoading message="Loading Insurance Broker..." className="min-h-[60vh] text-emerald-400" spinnerSize="md" />;
   }
 
   return (

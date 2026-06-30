@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
-import { RESEARCH_TREE, type TechDef, type ResearchId } from '@/config/researchTree';
+import { RESEARCH_TREE, type ResearchId } from '@/config/researchTree';
 import { REACTOR_CLASS_COLORS, SUB_CLASS_COLORS, getReactorIcon } from '@/data/powerReactors';
-import type { ReactorDefinition, ReactorClass, SubClass } from '@/data/powerReactors';
+import type { ReactorDefinition, SubClass } from '@/data/powerReactors';
 
 interface ResearchProgress {
   [key: string]: number;
@@ -38,40 +38,12 @@ function parseBldReq(requiredBld: string | null): { building: string; level: num
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   SVG TREE CONNECTOR — Draws a curved path between two points
-   ═══════════════════════════════════════════════════════════════════════ */
-function TreeConnector({ fromX, fromY, toX, toY, isActive, color }: {
-  fromX: number; fromY: number; toX: number; toY: number; isActive: boolean; color: string;
-}) {
-  const midX = (fromX + toX) / 2;
-  const path = `M ${fromX},${fromY} C ${midX},${fromY} ${midX},${toY} ${toX},${toY}`;
-  return (
-    <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible" style={{ zIndex: 0 }}>
-      <path
-        d={path}
-        fill="none"
-        stroke={isActive ? color : '#2a3544'}
-        strokeWidth={isActive ? 2 : 1}
-        opacity={isActive ? 0.6 : 0.2}
-        strokeDasharray={isActive ? 'none' : '4,4'}
-      />
-      {isActive && (
-        <circle r={2.5} fill={color} opacity={0.8}>
-          <animateMotion dur="2s" repeatCount="indefinite" path={path} />
-        </circle>
-      )}
-    </svg>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
    TECH NODE CARD — Cinematic reactor blueprint card
    ═══════════════════════════════════════════════════════════════════════ */
 function TechNodeCard({
-  entry, def, clsColor, index, columnHeight,
+  entry, def, clsColor,
 }: {
   entry: UnlockedSubClass; def?: ReactorDefinition; clsColor: string;
-  index: number; columnHeight: number;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const prevUnlocked = useRef(entry.is_unlocked);
@@ -210,7 +182,7 @@ export default function ReactorResearchTreePage() {
   const [unlocks, setUnlocks] = useState<UnlockedSubClass[]>([]);
   const [selectedReactor, setSelectedReactor] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [, setHoveredNode] = useState<string | null>(null);
   const treeContainerRef = useRef<HTMLDivElement>(null);
 
   const loadData = useCallback(async () => {
@@ -516,8 +488,6 @@ export default function ReactorResearchTreePage() {
                             entry={entry}
                             def={def}
                             clsColor={clsColor}
-                            index={idx}
-                            columnHeight={entries.length}
                           />
                         </div>
                       );

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
+import { useSearchParams } from 'react-router-dom';
 
 function cleanEnv(value: string | undefined): string {
   if (!value) return '';

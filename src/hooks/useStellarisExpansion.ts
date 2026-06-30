@@ -70,8 +70,8 @@ export function getStarbaseLevelIndex(level: StarbaseLevel): number {
 
 export function useStellarisExpansion() {
   const [influence, setInfluence] = useState(500);
-  const [maxInfluence, setMaxInfluence] = useState(1000);
-  const [influencePerTick, setInfluencePerTick] = useState(2);
+  const [maxInfluence] = useState(1000);
+  const [influencePerTick] = useState(2);
   const [claimedSystems, setClaimedSystems] = useState<ClaimedSystem[]>([]);
   const [territoryBorders, setTerritoryBorders] = useState<TerritoryBorder[]>([]);
   const [constructionQueue, setConstructionQueue] = useState<Starbase[]>([]);

@@ -370,7 +370,6 @@ export default function SeasonalEventsPage() {
 
   const active = EVENTS.filter(e => e.status === 'active');
   const upcoming = EVENTS.filter(e => e.status === 'upcoming');
-  const ended = EVENTS.filter(e => e.status === 'ended');
 
   function EventCard({ event }: { event: SeasonalEvent }) {
     const ts = TYPE_STYLE[event.type];

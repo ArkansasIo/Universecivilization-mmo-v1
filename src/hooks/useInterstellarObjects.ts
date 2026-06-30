@@ -83,16 +83,120 @@ export interface SpaceAnomalies {
   };
 }
 
-export const useInterstellarObjects = () => {
-  const [objects, setObjects] = useState<InterstellarObject[]>([]);
-  const [phenomena, setPhenomena] = useState<CosmicPhenomenon[]>([]);
-  const [missions, setMissions] = useState<ExplorationMission[]>([]);
-  const [anomalies, setAnomalies] = useState<SpaceAnomalies[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [currentUniverse, setCurrentUniverse] = useState('universe-alpha');
+// Pure helper functions — moved outside component to avoid exhaustive-deps issues
+function generateObjectName(type: string, index: number): string {
+  const prefixes = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta'];
+  const suffixes = ['Prime', 'Secundus', 'Tertius', 'Major', 'Minor', 'Nova', 'Vetus'];
+  
+  const typeNames: Record<string, string> = {
+    asteroid: 'Asteroid',
+    nebula: 'Nebula',
+    black_hole: 'Black Hole',
+    wormhole: 'Wormhole',
+    pulsar: 'Pulsar',
+    quasar: 'Quasar',
+    supernova: 'Supernova',
+    comet: 'Comet',
+    space_station: 'Station',
+    derelict_ship: 'Derelict'
+  };
 
-  // Generate interstellar objects for a universe
-  const generateInterstellarObjects = (universeId: string, count: number = 100): InterstellarObject[] => {
+  const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+  const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+  
+  return `${prefix} ${typeNames[type]} ${suffix}-${index + 1}`;
+}
+
+function generatePhenomenonName(type: string, index: number): string {
+  const names: Record<string, string[]> = {
+    supernova_remnant: ['Crab', 'Veil', 'Cassiopeia', 'Tycho', 'Kepler'],
+    gamma_ray_burst: ['Swift', 'Fermi', 'HETE', 'BeppoSAX', 'INTEGRAL'],
+    gravitational_wave: ['LIGO', 'Virgo', 'KAGRA', 'GEO', 'TAMA'],
+    dark_matter_cloud: ['Shadow', 'Phantom', 'Void', 'Abyss', 'Eclipse'],
+    antimatter_storm: ['Annihilation', 'Positron', 'Antiproton', 'Inverse', 'Mirror'],
+    temporal_anomaly: ['Chronos', 'Paradox', 'Causality', 'Timeline', 'Epoch']
+  };
+
+  const nameList = names[type] || ['Unknown'];
+  const name = nameList[Math.floor(Math.random() * nameList.length)];
+  
+  return `${name} Event ${index + 1}`;
+}
+
+function generateAnomalyName(type: string, index: number): string {
+  const names: Record<string, string[]> = {
+    time_dilation: ['Temporal Flux', 'Time Warp', 'Chronological Distortion'],
+    spatial_rift: ['Space Tear', 'Dimensional Crack', 'Reality Breach'],
+    energy_vortex: ['Power Maelstrom', 'Energy Cyclone', 'Plasma Whirlpool'],
+    quantum_fluctuation: ['Quantum Foam', 'Probability Wave', 'Uncertainty Field'],
+    dimensional_tear: ['Reality Rip', 'Multiverse Gateway', 'Dimensional Breach']
+  };
+
+  const nameList = names[type] || ['Unknown Anomaly'];
+  const name = nameList[Math.floor(Math.random() * nameList.length)];
+  
+  return `${name} ${index + 1}`;
+}
+
+function generatePhenomenonEffects(type: string, intensity: number) {
+  const effectTemplates: Record<string, any[]> = {
+    supernova_remnant: [
+      { type: 'damage', value: intensity * 10, description: 'Radiation damage to ships' },
+      { type: 'boost', value: intensity * 5, description: 'Energy production boost' }
+    ],
+    gamma_ray_burst: [
+      { type: 'damage', value: intensity * 15, description: 'Severe radiation damage' },
+      { type: 'disruption', value: intensity * 8, description: 'Communication interference' }
+    ],
+    gravitational_wave: [
+      { type: 'disruption', value: intensity * 6, description: 'Navigation disruption' },
+      { type: 'mutation', value: intensity * 3, description: 'Temporal effects' }
+    ],
+    dark_matter_cloud: [
+      { type: 'boost', value: intensity * 10, description: 'Dark matter harvesting bonus' },
+      { type: 'disruption', value: intensity * 4, description: 'Sensor interference' }
+    ],
+    antimatter_storm: [
+      { type: 'damage', value: intensity * 12, description: 'Matter-antimatter reactions' },
+      { type: 'boost', value: intensity * 8, description: 'Antimatter collection bonus' }
+    ],
+    temporal_anomaly: [
+      { type: 'mutation', value: intensity * 10, description: 'Time dilation effects' },
+      { type: 'boost', value: intensity * 5, description: 'Research speed increase' }
+    ]
+  };
+
+  return effectTemplates[type] || [];
+}
+
+function generateAnomalyFindings(type: string) {
+  const findings: Record<string, any> = {
+    time_dilation: {
+      technology: 'Temporal Manipulation',
+      knowledge: 'Understanding of time-space continuum'
+    },
+    spatial_rift: {
+      blueprint: 'Dimensional Drive',
+      knowledge: 'Multiverse theory insights'
+    },
+    energy_vortex: {
+      technology: 'Zero-Point Energy Extraction',
+      knowledge: 'Advanced energy physics'
+    },
+    quantum_fluctuation: {
+      artifact: 'Quantum Stabilizer',
+      knowledge: 'Quantum mechanics mastery'
+    },
+    dimensional_tear: {
+      blueprint: 'Interdimensional Gateway',
+      technology: 'Reality Manipulation'
+    }
+  };
+
+  return findings[type] || { knowledge: 'Unknown scientific data' };
+}
+
+function generateInterstellarObjects(universeId: string, count: number = 100): InterstellarObject[] {
     const objectTypes: InterstellarObject['type'][] = [
       'asteroid', 'nebula', 'black_hole', 'wormhole', 'pulsar', 
       'quasar', 'supernova', 'comet', 'space_station', 'derelict_ship'
@@ -160,184 +264,77 @@ export const useInterstellarObjects = () => {
     });
   };
 
-  // Generate cosmic phenomena
-  const generateCosmicPhenomena = (universeId: string, count: number = 20): CosmicPhenomenon[] => {
-    const types: CosmicPhenomenon['type'][] = [
-      'supernova_remnant', 'gamma_ray_burst', 'gravitational_wave',
-      'dark_matter_cloud', 'antimatter_storm', 'temporal_anomaly'
-    ];
+function generateCosmicPhenomena(universeId: string, count: number = 20): CosmicPhenomenon[] {
+  const types: CosmicPhenomenon['type'][] = [
+    'supernova_remnant', 'gamma_ray_burst', 'gravitational_wave',
+    'dark_matter_cloud', 'antimatter_storm', 'temporal_anomaly'
+  ];
 
-    return Array.from({ length: count }, (_, i) => {
-      const type = types[Math.floor(Math.random() * types.length)];
-      const intensity = Math.floor(Math.random() * 100) + 1;
-      const duration = Math.floor(Math.random() * 1440) + 60; // 1-24 hours
-      const startedAt = new Date();
-      const endsAt = new Date(startedAt.getTime() + duration * 60000);
+  return Array.from({ length: count }, (_, i) => {
+    const type = types[Math.floor(Math.random() * types.length)];
+    const intensity = Math.floor(Math.random() * 100) + 1;
+    const duration = Math.floor(Math.random() * 1440) + 60;
+    const startedAt = new Date();
+    const endsAt = new Date(startedAt.getTime() + duration * 60000);
 
-      const effects = generatePhenomenonEffects(type, intensity);
+    const effects = generatePhenomenonEffects(type, intensity);
 
-      return {
-        id: `phenomenon-${universeId}-${i}`,
-        universeId,
-        type,
-        name: generatePhenomenonName(type, i),
-        coordinates: {
-          x: Math.floor(Math.random() * 10000),
-          y: Math.floor(Math.random() * 10000),
-          z: Math.floor(Math.random() * 1000)
-        },
-        intensity,
-        radius: Math.floor(Math.random() * 500) + 100,
-        duration,
-        effects,
-        active: Math.random() > 0.3,
-        startedAt,
-        endsAt
-      };
-    });
-  };
-
-  // Generate space anomalies
-  const generateSpaceAnomalies = (universeId: string, count: number = 30): SpaceAnomalies[] => {
-    const types: SpaceAnomalies['type'][] = [
-      'time_dilation', 'spatial_rift', 'energy_vortex',
-      'quantum_fluctuation', 'dimensional_tear'
-    ];
-
-    return Array.from({ length: count }, (_, i) => {
-      const type = types[Math.floor(Math.random() * types.length)];
-      const investigated = Math.random() > 0.8;
-
-      return {
-        id: `anomaly-${universeId}-${i}`,
-        universeId,
-        type,
-        name: generateAnomalyName(type, i),
-        coordinates: {
-          x: Math.floor(Math.random() * 10000),
-          y: Math.floor(Math.random() * 10000),
-          z: Math.floor(Math.random() * 1000)
-        },
-        stability: Math.floor(Math.random() * 100) + 1,
-        researchValue: Math.floor(Math.random() * 10000) + 1000,
-        investigated,
-        findings: investigated ? generateAnomalyFindings(type) : undefined
-      };
-    });
-  };
-
-  // Helper functions for name generation
-  const generateObjectName = (type: string, index: number): string => {
-    const prefixes = ['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta'];
-    const suffixes = ['Prime', 'Secundus', 'Tertius', 'Major', 'Minor', 'Nova', 'Vetus'];
-    
-    const typeNames: Record<string, string> = {
-      asteroid: 'Asteroid',
-      nebula: 'Nebula',
-      black_hole: 'Black Hole',
-      wormhole: 'Wormhole',
-      pulsar: 'Pulsar',
-      quasar: 'Quasar',
-      supernova: 'Supernova',
-      comet: 'Comet',
-      space_station: 'Station',
-      derelict_ship: 'Derelict'
-    };
-
-    const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-    const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
-    
-    return `${prefix} ${typeNames[type]} ${suffix}-${index + 1}`;
-  };
-
-  const generatePhenomenonName = (type: string, index: number): string => {
-    const names: Record<string, string[]> = {
-      supernova_remnant: ['Crab', 'Veil', 'Cassiopeia', 'Tycho', 'Kepler'],
-      gamma_ray_burst: ['Swift', 'Fermi', 'HETE', 'BeppoSAX', 'INTEGRAL'],
-      gravitational_wave: ['LIGO', 'Virgo', 'KAGRA', 'GEO', 'TAMA'],
-      dark_matter_cloud: ['Shadow', 'Phantom', 'Void', 'Abyss', 'Eclipse'],
-      antimatter_storm: ['Annihilation', 'Positron', 'Antiproton', 'Inverse', 'Mirror'],
-      temporal_anomaly: ['Chronos', 'Paradox', 'Causality', 'Timeline', 'Epoch']
-    };
-
-    const nameList = names[type] || ['Unknown'];
-    const name = nameList[Math.floor(Math.random() * nameList.length)];
-    
-    return `${name} Event ${index + 1}`;
-  };
-
-  const generateAnomalyName = (type: string, index: number): string => {
-    const names: Record<string, string[]> = {
-      time_dilation: ['Temporal Flux', 'Time Warp', 'Chronological Distortion'],
-      spatial_rift: ['Space Tear', 'Dimensional Crack', 'Reality Breach'],
-      energy_vortex: ['Power Maelstrom', 'Energy Cyclone', 'Plasma Whirlpool'],
-      quantum_fluctuation: ['Quantum Foam', 'Probability Wave', 'Uncertainty Field'],
-      dimensional_tear: ['Reality Rip', 'Multiverse Gateway', 'Dimensional Breach']
-    };
-
-    const nameList = names[type] || ['Unknown Anomaly'];
-    const name = nameList[Math.floor(Math.random() * nameList.length)];
-    
-    return `${name} ${index + 1}`;
-  };
-
-  const generatePhenomenonEffects = (type: string, intensity: number) => {
-    const effectTemplates: Record<string, any[]> = {
-      supernova_remnant: [
-        { type: 'damage', value: intensity * 10, description: 'Radiation damage to ships' },
-        { type: 'boost', value: intensity * 5, description: 'Energy production boost' }
-      ],
-      gamma_ray_burst: [
-        { type: 'damage', value: intensity * 15, description: 'Severe radiation damage' },
-        { type: 'disruption', value: intensity * 8, description: 'Communication interference' }
-      ],
-      gravitational_wave: [
-        { type: 'disruption', value: intensity * 6, description: 'Navigation disruption' },
-        { type: 'mutation', value: intensity * 3, description: 'Temporal effects' }
-      ],
-      dark_matter_cloud: [
-        { type: 'boost', value: intensity * 10, description: 'Dark matter harvesting bonus' },
-        { type: 'disruption', value: intensity * 4, description: 'Sensor interference' }
-      ],
-      antimatter_storm: [
-        { type: 'damage', value: intensity * 12, description: 'Matter-antimatter reactions' },
-        { type: 'boost', value: intensity * 8, description: 'Antimatter collection bonus' }
-      ],
-      temporal_anomaly: [
-        { type: 'mutation', value: intensity * 10, description: 'Time dilation effects' },
-        { type: 'boost', value: intensity * 5, description: 'Research speed increase' }
-      ]
-    };
-
-    return effectTemplates[type] || [];
-  };
-
-  const generateAnomalyFindings = (type: string) => {
-    const findings: Record<string, any> = {
-      time_dilation: {
-        technology: 'Temporal Manipulation',
-        knowledge: 'Understanding of time-space continuum'
+    return {
+      id: `phenomenon-${universeId}-${i}`,
+      universeId,
+      type,
+      name: generatePhenomenonName(type, i),
+      coordinates: {
+        x: Math.floor(Math.random() * 10000),
+        y: Math.floor(Math.random() * 10000),
+        z: Math.floor(Math.random() * 1000)
       },
-      spatial_rift: {
-        blueprint: 'Dimensional Drive',
-        knowledge: 'Multiverse theory insights'
-      },
-      energy_vortex: {
-        technology: 'Zero-Point Energy Extraction',
-        knowledge: 'Advanced energy physics'
-      },
-      quantum_fluctuation: {
-        artifact: 'Quantum Stabilizer',
-        knowledge: 'Quantum mechanics mastery'
-      },
-      dimensional_tear: {
-        blueprint: 'Interdimensional Gateway',
-        technology: 'Reality Manipulation'
-      }
+      intensity,
+      radius: Math.floor(Math.random() * 500) + 100,
+      duration,
+      effects,
+      active: Math.random() > 0.3,
+      startedAt,
+      endsAt
     };
+  });
+}
 
-    return findings[type] || { knowledge: 'Unknown scientific data' };
-  };
+function generateSpaceAnomalies(universeId: string, count: number = 30): SpaceAnomalies[] {
+  const types: SpaceAnomalies['type'][] = [
+    'time_dilation', 'spatial_rift', 'energy_vortex',
+    'quantum_fluctuation', 'dimensional_tear'
+  ];
+
+  return Array.from({ length: count }, (_, i) => {
+    const type = types[Math.floor(Math.random() * types.length)];
+    const investigated = Math.random() > 0.8;
+
+    return {
+      id: `anomaly-${universeId}-${i}`,
+      universeId,
+      type,
+      name: generateAnomalyName(type, i),
+      coordinates: {
+        x: Math.floor(Math.random() * 10000),
+        y: Math.floor(Math.random() * 10000),
+        z: Math.floor(Math.random() * 1000)
+      },
+      stability: Math.floor(Math.random() * 100) + 1,
+      researchValue: Math.floor(Math.random() * 10000) + 1000,
+      investigated,
+      findings: investigated ? generateAnomalyFindings(type) : undefined
+    };
+  });
+}
+
+export const useInterstellarObjects = () => {
+  const [objects, setObjects] = useState<InterstellarObject[]>([]);
+  const [phenomena, setPhenomena] = useState<CosmicPhenomenon[]>([]);
+  const [missions, setMissions] = useState<ExplorationMission[]>([]);
+  const [anomalies, setAnomalies] = useState<SpaceAnomalies[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentUniverse, setCurrentUniverse] = useState('universe-alpha');
 
   // Initialize objects for current universe
   useEffect(() => {
@@ -405,7 +402,7 @@ export const useInterstellarObjects = () => {
   };
 
   // Harvest resources from object
-  const harvestResources = async (objectId: string, fleetId: string): Promise<any> => {
+  const harvestResources = async (objectId: string, _fleetId: string): Promise<any> => {
     const object = objects.find(o => o.id === objectId);
     if (!object) throw new Error('Object not found');
     if (!object.harvestable) throw new Error('Object is not harvestable');

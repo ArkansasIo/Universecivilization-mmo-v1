@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
+import PageLoading from '@/components/PageLoading';
 
 interface Skill {
   id: string;
@@ -184,11 +184,7 @@ export default function SkillsPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <i className="ri-loader-4-line animate-spin text-4xl text-purple-400"></i>
-      </div>
-    );
+    return <PageLoading className="h-64 text-purple-400" spinnerSize="md"><i className="ri-loader-4-line animate-spin text-4xl text-purple-400"></i></PageLoading>;
   }
 
   return (

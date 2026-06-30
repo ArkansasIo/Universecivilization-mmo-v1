@@ -1,0 +1,10 @@
+{
+  "modules": [
+    { "name": "dataLayer", "path": "src/config/dataLayer.ts", "description": "Data layer generation and feature configuration" },
+    { "name": "debug", "path": "src/config/debug.ts", "description": "Debug and development mode configuration" },
+    { "name": "defaults", "path": "src/config/defaults.ts", "description": "Default player stats, resources, and game settings" },
+    { "name": "gameConfig", "path": "src/config/gameConfig.ts", "description": "Central game mechanics configuration" },
+    { "name": "paths", "path": "src/config/paths.ts", "description": "Asset and data file path mappings" },
+    { "name": "ui", "path": "src/config/ui.ts", "description": "UI theme, layout, and component settings" }
+  ]
+}

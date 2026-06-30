@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
 export interface CraftingRecipe {
@@ -68,9 +68,9 @@ export const useCrafting = (playerId: string) => {
       const interval = setInterval(updateQueueProgress, 5000);
       return () => clearInterval(interval);
     }
-  }, [playerId]);
+  }, [playerId, loadCraftingData, updateQueueProgress]);
 
-  const loadCraftingData = async () => {
+  const loadCraftingData = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -108,9 +108,9 @@ export const useCrafting = (playerId: string) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [playerId]);
 
-  const updateQueueProgress = async () => {
+  const updateQueueProgress = useCallback(async () => {
     try {
       const { data: queueData, error } = await supabase
         .from('crafting_queue')
@@ -159,7 +159,7 @@ export const useCrafting = (playerId: string) => {
     } catch (error) {
       console.error('Error updating queue progress:', error);
     }
-  };
+  }, [playerId]);
 
   const startCrafting = async (recipeId: string, quantity: number = 1) => {
     try {
@@ -281,7 +281,7 @@ export const useCrafting = (playerId: string) => {
     }
   };
 
-  const addItemToInventory = async (item: any, quantity: number) => {
+  const addItemToInventory = async (item: any, _quantity: number) => {
     // Implementation depends on item type
     switch (item.type) {
       case 'weapon':

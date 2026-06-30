@@ -11,8 +11,8 @@ interface AuthUser {
   provider: string;
 }
 
-const supabaseUrl = (import.meta.env.VITE_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '').replace(/^[\"']|[\"']$/g, '');
-const anonKey = (import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY || '').replace(/^[\"']|[\"']$/g, '');
+const supabaseUrl = (import.meta.env.VITE_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '').replace(/^["']|["']$/g, '');
+const anonKey = (import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY || '').replace(/^["']|["']$/g, '');
 
 async function getSessionToken(): Promise<string | null> {
   const { data } = await supabase.auth.getSession();

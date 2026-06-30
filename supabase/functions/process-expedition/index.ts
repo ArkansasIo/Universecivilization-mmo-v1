@@ -184,7 +184,6 @@ Deno.serve(async (req) => {
       }
       case 'pirates': {
         const ships = fleet.ships || {};
-        const totalShips = Object.values(ships).reduce((a: number, b: unknown) => a + (typeof b === 'number' ? b : 0), 0);
         const lossPercent = Math.random() * 0.3 + 0.1; // 10-40% loss
         const shipsLost: Record<string, number> = {};
         for (const [type, count] of Object.entries(ships)) {

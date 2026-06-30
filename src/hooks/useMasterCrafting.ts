@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { craftingItems, CraftingItem } from '../data/craftingItems';
 import { craftingMaterials } from '../data/craftingMaterials';
@@ -41,7 +41,7 @@ export const useMasterCrafting = (playerId: string) => {
   const [loading, setLoading] = useState(true);
 
   // Initialize crafting skills
-  const initializeSkills = async () => {
+  const initializeSkills = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -109,10 +109,10 @@ export const useMasterCrafting = (playerId: string) => {
       ];
       setCraftingSkills(defaultSkills);
     }
-  };
+  }, []);
 
   // Load player materials
-  const loadMaterials = async () => {
+  const loadMaterials = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -183,10 +183,10 @@ export const useMasterCrafting = (playerId: string) => {
       ];
       setMaterials(defaultMaterials);
     }
-  };
+  }, []);
 
   // Load crafting queue
-  const loadCraftingQueue = async () => {
+  const loadCraftingQueue = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -224,7 +224,7 @@ export const useMasterCrafting = (playerId: string) => {
       // Set empty queue on error to prevent UI issues
       setCraftingQueue([]);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const init = async () => {
@@ -245,10 +245,10 @@ export const useMasterCrafting = (playerId: string) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [playerId]);
+  }, [playerId, initializeSkills, loadMaterials, loadCraftingQueue, updateCraftingProgress]);
 
   // Update crafting progress
-  const updateCraftingProgress = () => {
+  const updateCraftingProgress = useCallback(() => {
     setCraftingQueue(prev => prev.map(item => {
       if (item.status === 'crafting') {
         const now = new Date();
@@ -264,7 +264,7 @@ export const useMasterCrafting = (playerId: string) => {
       }
       return item;
     }));
-  };
+  }, []);
 
   // Start crafting an item
   const startCrafting = async (itemId: string, quantity: number = 1) => {
@@ -297,7 +297,7 @@ export const useMasterCrafting = (playerId: string) => {
       const startTime = new Date();
       const endTime = new Date(startTime.getTime() + item.craftingTime * 1000 * quantity);
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('crafting_queue')
         .insert({
           player_id: playerId,
@@ -308,9 +308,7 @@ export const useMasterCrafting = (playerId: string) => {
           end_time: endTime.toISOString(),
           progress: 0,
           status: 'crafting'
-        })
-        .select()
-        .single();
+        });
 
       if (error) throw error;
 
@@ -322,7 +320,7 @@ export const useMasterCrafting = (playerId: string) => {
   };
 
   // Speed up crafting with dark matter
-  const speedUpCrafting = async (queueId: string, darkMatterCost: number) => {
+  const speedUpCrafting = async (queueId: string, _darkMatterCost: number) => {
     try {
       const { error } = await supabase
         .from('crafting_queue')

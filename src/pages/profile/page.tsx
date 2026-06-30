@@ -122,7 +122,7 @@ export default function ProfilePage() {
   const [achievements, setAchievements] = useState<AchievementRow[]>([]);
   const [planets, setPlanets]     = useState<number>(0);
 
-  const [loading, setLoading]     = useState(true);
+  const [, setLoading]     = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'combat' | 'achievements' | 'settings'>('overview');
   const [editing, setEditing]     = useState(false);
   const [newUsername, setNewUsername] = useState('');

@@ -77,7 +77,7 @@ export default function CraftingMaterialsPage() {
     return true;
   });
 
-  const totalValue = MATERIALS.reduce((a, m) => a + m.owned, 0);
+  MATERIALS.reduce((a, m) => a + m.owned, 0);
 
   const getTierConfig = (tier: number) => TIER_CONFIG.find(t => t.tier === tier) || TIER_CONFIG[0];
 

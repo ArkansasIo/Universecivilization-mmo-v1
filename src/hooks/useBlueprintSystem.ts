@@ -105,7 +105,7 @@ export function useBlueprintSystem(playerId: string) {
       const interval = setInterval(() => checkJobProgress(), 5000);
       return () => clearInterval(interval);
     }
-  }, [playerId, loadJobs]);
+  }, [playerId, loadJobs, checkJobProgress]);
 
   // Auto-check job progress
   const checkJobProgress = useCallback(async () => {
@@ -360,7 +360,7 @@ export function useBlueprintSystem(playerId: string) {
 
       await loadJobs();
       return { success: true };
-    } catch (err) {
+    } catch {
       return { success: false };
     }
   }, [loadJobs]);

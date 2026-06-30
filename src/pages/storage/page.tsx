@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 interface StorageModule {
   id: string;
@@ -23,7 +22,6 @@ interface StorageModule {
 }
 
 export default function StoragePage() {
-  const [selectedPlanet, setSelectedPlanet] = useState('homeworld');
   const [activeCategory, setActiveCategory] = useState('all');
   const [expandedStorage, setExpandedStorage] = useState<string | null>(null);
 

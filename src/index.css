@@ -158,74 +158,74 @@
 /* ── og-white (light / classic / clean) ─────────────────────────────── */
 [data-sd-theme="og-white"] {
   /* Background: near-white → dark (light theme background scale) */
-  --background-50: 0.98 0.002 250;
-  --background-100: 0.95 0.005 250;
-  --background-200: 0.90 0.008 250;
-  --background-300: 0.85 0.010 250;
-  --background-400: 0.78 0.010 250;
-  --background-500: 0.70 0.010 250;
-  --background-600: 0.62 0.010 250;
-  --background-700: 0.52 0.010 250;
-  --background-800: 0.40 0.010 250;
-  --background-900: 0.28 0.010 250;
-  --background-950: 0.15 0.010 250;
+  --background-50: 0.99 0.001 260;
+  --background-100: 0.96 0.002 260;
+  --background-200: 0.92 0.003 260;
+  --background-300: 0.86 0.004 260;
+  --background-400: 0.78 0.005 260;
+  --background-500: 0.68 0.006 260;
+  --background-600: 0.56 0.006 260;
+  --background-700: 0.42 0.005 260;
+  --background-800: 0.30 0.004 260;
+  --background-900: 0.20 0.003 260;
+  --background-950: 0.12 0.002 260;
 
   /* Foreground: brightest → darkest (text scale) */
-  --foreground-50: 0.98 0.002 240;
-  --foreground-100: 0.94 0.004 240;
-  --foreground-200: 0.88 0.008 240;
-  --foreground-300: 0.80 0.012 240;
-  --foreground-400: 0.72 0.016 240;
-  --foreground-500: 0.64 0.018 240;
-  --foreground-600: 0.55 0.020 240;
-  --foreground-700: 0.46 0.020 240;
-  --foreground-800: 0.36 0.018 240;
-  --foreground-900: 0.25 0.014 240;
-  --foreground-950: 0.15 0.010 240;
+  --foreground-50: 0.09 0.002 260;
+  --foreground-100: 0.15 0.003 260;
+  --foreground-200: 0.24 0.004 260;
+  --foreground-300: 0.34 0.005 260;
+  --foreground-400: 0.45 0.006 260;
+  --foreground-500: 0.56 0.006 260;
+  --foreground-600: 0.68 0.005 260;
+  --foreground-700: 0.78 0.004 260;
+  --foreground-800: 0.88 0.003 260;
+  --foreground-900: 0.95 0.002 260;
+  --foreground-950: 0.99 0.001 260;
 
   /* Primary: rich cobalt blue */
-  --primary-50: 0.95 0.04 255;
-  --primary-100: 0.88 0.08 255;
-  --primary-200: 0.80 0.12 255;
-  --primary-300: 0.70 0.16 255;
-  --primary-400: 0.60 0.18 255;
-  --primary-500: 0.53 0.18 255;
-  --primary-600: 0.47 0.17 255;
-  --primary-700: 0.40 0.15 255;
-  --primary-800: 0.32 0.12 255;
-  --primary-900: 0.24 0.08 255;
-  --primary-950: 0.16 0.05 255;
+  --primary-50: 0.98 0.001 260;
+  --primary-100: 0.94 0.002 260;
+  --primary-200: 0.88 0.003 260;
+  --primary-300: 0.80 0.004 260;
+  --primary-400: 0.70 0.005 260;
+  --primary-500: 0.60 0.006 260;
+  --primary-600: 0.50 0.006 260;
+  --primary-700: 0.40 0.005 260;
+  --primary-800: 0.30 0.004 260;
+  --primary-900: 0.20 0.003 260;
+  --primary-950: 0.12 0.002 260;
 
   /* Accent: deep teal */
-  --accent-50: 0.95 0.04 175;
-  --accent-100: 0.88 0.08 175;
-  --accent-200: 0.80 0.12 175;
-  --accent-300: 0.72 0.14 175;
-  --accent-400: 0.64 0.16 175;
-  --accent-500: 0.58 0.17 175;
-  --accent-600: 0.51 0.16 175;
-  --accent-700: 0.43 0.14 175;
-  --accent-800: 0.35 0.12 175;
-  --accent-900: 0.27 0.08 175;
-  --accent-950: 0.18 0.05 175;
+  --accent-50: 0.96 0.001 260;
+  --accent-100: 0.90 0.002 260;
+  --accent-200: 0.80 0.003 260;
+  --accent-300: 0.68 0.004 260;
+  --accent-400: 0.55 0.005 260;
+  --accent-500: 0.42 0.005 260;
+  --accent-600: 0.33 0.004 260;
+  --accent-700: 0.25 0.003 260;
+  --accent-800: 0.18 0.002 260;
+  --accent-900: 0.12 0.002 260;
+  --accent-950: 0.08 0.001 260;
 
   /* Secondary: muted indigo */
-  --secondary-50: 0.95 0.03 270;
-  --secondary-100: 0.88 0.06 270;
-  --secondary-200: 0.80 0.09 270;
-  --secondary-300: 0.72 0.11 270;
-  --secondary-400: 0.62 0.13 270;
-  --secondary-500: 0.52 0.13 270;
-  --secondary-600: 0.46 0.12 270;
-  --secondary-700: 0.38 0.11 270;
-  --secondary-800: 0.30 0.09 270;
-  --secondary-900: 0.23 0.07 270;
-  --secondary-950: 0.16 0.05 270;
+  --secondary-50: 0.97 0.002 250;
+  --secondary-100: 0.93 0.003 250;
+  --secondary-200: 0.86 0.004 250;
+  --secondary-300: 0.76 0.005 250;
+  --secondary-400: 0.65 0.006 250;
+  --secondary-500: 0.54 0.006 250;
+  --secondary-600: 0.44 0.005 250;
+  --secondary-700: 0.34 0.004 250;
+  --secondary-800: 0.24 0.003 250;
+  --secondary-900: 0.16 0.002 250;
+  --secondary-950: 0.10 0.001 250;
 
   /* Semantic text convenience tokens */
-  --sd-text-primary: 0.16 0.02 250;
-  --sd-text-secondary: 0.42 0.03 250;
-  --sd-text-highlight: 0.55 0.17 255;
+  --sd-text-primary: 0.09 0.002 260;
+  --sd-text-secondary: 0.32 0.004 260;
+  --sd-text-highlight: 0.20 0.003 260;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -285,6 +285,34 @@
 /* ═══════════════════════════════════════════════════════════════════════
    SEMANTIC UTILITY CLASSES (Sci-Fi Theming)
    ═══════════════════════════════════════════════════════════════════════ */
+
+@layer utilities {
+  [data-sd-theme="og-white"] body {
+    background:
+      linear-gradient(180deg, #ffffff 0%, #f4f5f7 48%, #e5e7eb 100%);
+    color: #09090b;
+  }
+
+  [data-sd-theme="og-white"] .text-white,
+  [data-sd-theme="og-white"] .text-ogame-muted,
+  [data-sd-theme="og-white"] .text-ogame-dim,
+  [data-sd-theme="og-white"] .sd-muted-text {
+    color: #09090b !important;
+  }
+
+  [data-sd-theme="og-white"] .sd-highlight-text,
+  [data-sd-theme="og-white"] .sd-eyebrow {
+    color: #27272a !important;
+  }
+
+  [data-sd-theme="og-white"] .sd-panel,
+  [data-sd-theme="og-white"] .sd-panel-elevated {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(229, 231, 235, 0.94));
+    border-color: rgba(113, 113, 122, 0.35);
+    color: #09090b;
+  }
+}
 
 @layer components {
   /* ── Typography utilities ────────────────────────────────────────── */

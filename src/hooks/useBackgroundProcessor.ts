@@ -93,7 +93,7 @@ export function useBackgroundProcessor() {
         const success = Math.random() < successChance;
         const detected = Math.random() < 0.3;
 
-        let result: any = { success, detected };
+        const result: any = { success, detected };
 
         if (success && mission.mission_type === 'steal') {
           const { data: targetResources } = await supabase

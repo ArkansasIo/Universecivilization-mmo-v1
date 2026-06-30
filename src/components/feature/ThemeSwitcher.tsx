@@ -26,10 +26,10 @@ const THEME_META: ThemeMeta[] = [
   },
   {
     id: 'og-white',
-    label: 'Classic',
+    label: 'Silver',
     icon: 'ri-sun-line',
-    previewColor: '#3b82f6',
-    description: 'Clean light interface',
+    previewColor: '#d4d4d8',
+    description: 'White silver interface',
   },
 ];
 

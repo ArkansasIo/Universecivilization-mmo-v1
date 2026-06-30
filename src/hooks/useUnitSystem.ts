@@ -6,14 +6,6 @@ import { ALL_UNITS, personnelPools as initialPools, trainingTracks } from '../da
 // UNIT SYSTEM GAME LOGIC HOOK
 // ═══════════════════════════════════════════════════════════
 
-interface UnitSystemState {
-  units: UnitDefinition[];
-  personnelPools: PersonnelPool[];
-  trainingQueue: TrainingQueueEntry[];
-  empirePersonnel: EmpirePersonnel;
-  notifications: string[];
-}
-
 interface TrainUnitsParams {
   unitId: string;
   count: number;
@@ -92,7 +84,7 @@ function computeEmpirePersonnel(units: UnitDefinition[], pools: PersonnelPool[])
 }
 
 // ─── Training Speed Multipliers ───────────────────────────
-function getTrainingSpeedMultiplier(category: UnitCategory): number {
+function getTrainingSpeedMultiplier(_category: UnitCategory): number {
   // In a real implementation this would read from research/buildings
   return 1.0;
 }

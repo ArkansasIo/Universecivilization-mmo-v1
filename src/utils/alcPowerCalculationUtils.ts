@@ -1,4 +1,4 @@
-import type { ReactorDefinition, SubClass, ConnectionType } from '@/data/powerReactors';
+import type { ReactorDefinition, ConnectionType } from '@/data/powerReactors';
 import {
   SUB_CLASS_MULTIPLIERS,
   CONNECTION_TYPES,

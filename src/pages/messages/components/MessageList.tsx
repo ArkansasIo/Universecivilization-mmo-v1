@@ -1,4 +1,5 @@
 import type { Message } from '@/hooks/useMessaging';
+import PageLoading from '@/components/PageLoading';
 
 const TYPE_META: Record<string, { icon: string; color: string; label: string }> = {
   personal:      { icon: 'ri-user-line',        color: '#00d4ff', label: 'Personal'      },
@@ -31,11 +32,7 @@ function timeAgo(iso: string): string {
 
 export default function MessageList({ messages, selected, folder, onSelect, onDelete, loading }: Props) {
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-40">
-        <i className="ri-loader-4-line text-2xl text-cyan-400 animate-spin"></i>
-      </div>
-    );
+    return <PageLoading className="h-40 text-cyan-400" spinnerSize="md"><i className="ri-loader-4-line text-2xl text-cyan-400 animate-spin"></i></PageLoading>;
   }
 
   if (messages.length === 0) {

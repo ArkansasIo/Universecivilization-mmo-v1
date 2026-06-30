@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface Starship {
   id: string;
@@ -66,17 +66,6 @@ interface Starship {
     currentFragments: number;
     researchPoints: number;
   };
-}
-
-interface Blueprint {
-  id: string;
-  shipId: string;
-  name: string;
-  rarity: string;
-  progress: number;
-  fragments: number;
-  maxFragments: number;
-  source: string[];
 }
 
 interface CraftingMaterial {

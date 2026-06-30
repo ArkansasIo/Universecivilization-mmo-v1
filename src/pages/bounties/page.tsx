@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useBountySystem } from '../../hooks/useBountySystem';
+import PageLoading from '@/components/PageLoading';
 
 function formatNum(n: number): string {
   if (n >= 1e9) return `${(n / 1e9).toFixed(1)}B`;
@@ -128,14 +129,7 @@ export default function BountyBoardPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center" style={{ minHeight: '60vh' }}>
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-400 mb-4"></div>
-          <p className="text-white/60">Loading Bounty Board...</p>
-        </div>
-      </div>
-    );
+    return <PageLoading message="Loading Bounty Board..." className="min-h-[60vh] text-yellow-400" spinnerSize="md" />;
   }
 
   return (

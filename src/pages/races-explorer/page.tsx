@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import { NPC_RACES } from '@/data/npcRaces';
 import { ENEMY_RACES } from '@/data/enemyRaces';
 import { FRIENDLY_RACES } from '@/data/friendlyRaces';
-import { RACES, getRaceById, type RaceDefinition, type RaceId } from '@/data/playerRaces';
+import { RACES, type RaceDefinition, type RaceId } from '@/data/playerRaces';
 import { useAuth } from '@/contexts/AuthContext';
 import CompareTraitsModal from '@/components/feature/CompareTraitsModal';
 import type { NPCRace, EnemyRace, FriendlyRace } from '@/types/gameTypes';
 import {
-  RACE_CLASS_LETTER_NAMES, RACE_CLASS_COLORS, RACE_CLASS_DESCRIPTIONS,
-  RACE_CATEGORIES, RACE_SUB_CATEGORIES,
+  RACE_CLASS_LETTER_NAMES, RACE_CLASS_COLORS,
+  RACE_CATEGORIES,
 } from '@/types/gameTypes';
 
 type RaceTab = 'playable' | 'npc' | 'enemy' | 'friendly';
@@ -179,7 +179,6 @@ export default function RacesExplorerPage() {
             All Classes
           </button>
           {Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ').map((letter) => {
-            const clsLetter = letter as import('@/types/gameTypes').RaceClassLetter;
             const hasRaces = currentRaces.some(r => getRaceClassLetter(r) === letter);
             if (!hasRaces && filterClass !== letter) return null;
             return (

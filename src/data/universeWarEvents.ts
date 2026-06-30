@@ -61,19 +61,6 @@ export interface WarSummary {
   biggestBattle: string;
 }
 
-const UNIVERSE_DATA = [
-  { id: 'u1', name: 'Alpha Prime', color: '#00d4ff' },
-  { id: 'u2', name: 'Omega Void', color: '#7c3aed' },
-  { id: 'u3', name: 'Genesis Cluster', color: '#4ade80' },
-  { id: 'u4', name: 'Eternal Nexus', color: '#f59e0b' },
-  { id: 'u5', name: 'Quantum Flux', color: '#06b6d4' },
-  { id: 'u6', name: 'Temporal Rift', color: '#a78bfa' },
-  { id: 'u7', name: 'Iron Dominion', color: '#f87171' },
-  { id: 'u8', name: 'Crystal Expanse', color: '#c084fc' },
-  { id: 'u9', name: 'Void Nexus', color: '#818cf8' },
-  { id: 'u10', name: 'Solar Dominion', color: '#fbbf24' },
-];
-
 export const warEvents: WarEvent[] = [
   {
     id: 'we-001',

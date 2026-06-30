@@ -8,7 +8,7 @@ interface UnitDetailsProps {
   onTrain?: (unitId: string, count: number) => void;
 }
 
-export default function UnitDetails({ unit, onClose, onTrain }: UnitDetailsProps) {
+export default function UnitDetails({ unit, onClose }: UnitDetailsProps) {
   const classGradient = UNIT_CLASS_GRADIENTS[unit.class] || 'from-gray-500 to-slate-600';
   const rarityGradient = UNIT_RARITY_GRADIENTS[unit.rarity] || 'from-gray-500 to-slate-600';
   const statusColor = UNIT_STATUS_COLORS[unit.status] || 'text-gray-400';

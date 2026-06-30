@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef, useMemo } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -156,7 +156,7 @@ export function useGameLoop() {
     }
   }, [user]);
 
-  const executeMission = async (fleet: any) => {
+  const executeMission = useCallback(async (fleet: any) => {
     if (!mountedRef.current) return;
 
     try {
@@ -468,9 +468,9 @@ export function useGameLoop() {
     } catch (error) {
       if (mountedRef.current) console.error('Mission execution error:', error);
     }
-  };
+  }, [user]);
 
-  const completeBuilding = async (item: any) => {
+  const completeBuilding = useCallback(async (item: any) => {
     if (!mountedRef.current) return;
     try {
       const { data: existingBuilding } = await supabase
@@ -516,9 +516,9 @@ export function useGameLoop() {
     } catch (error) {
       if (mountedRef.current) console.error('Error completing building:', error);
     }
-  };
+  }, [user]);
 
-  const completeResearch = async (item: any) => {
+  const completeResearch = useCallback(async (item: any) => {
     if (!mountedRef.current) return;
     try {
       const { data: existingTech } = await supabase
@@ -563,7 +563,7 @@ export function useGameLoop() {
     } catch (error) {
       if (mountedRef.current) console.error('Error completing research:', error);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     mountedRef.current = true;

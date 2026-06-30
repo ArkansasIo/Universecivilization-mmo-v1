@@ -53,24 +53,10 @@ function WarScoreBar({ score }: { score: number }) {
   );
 }
 
-function ProgressBar({ value, color, label }: { value: number; color: string; label?: string }) {
-  return (
-    <div className="flex items-center gap-2">
-      <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
-        <div className="h-full rounded-full" style={{ width: `${value}%`, background: `linear-gradient(90deg, ${color}60, ${color})` }} />
-      </div>
-      {label && <span className="text-xs font-semibold flex-shrink-0" style={{ color }}>{label}</span>}
-    </div>
-  );
-}
-
 /* ─────────────────────────────────────────────
    EMPIRE CARD
 ───────────────────────────────────────────────────────────── */
 function EmpireCard({ empire, isSelected, isPlayer, onClick }: { empire: EmpireAtWar; isSelected: boolean; isPlayer: boolean; onClick: () => void }) {
-  const stanceColors: Record<string, string> = {
-    total_war: '#ef4444', limited_war: '#f87171', cold_war: '#fb923c',
-  };
   const warStanceColor = empire.activeWars >= 3 ? '#ef4444' : empire.activeWars >= 2 ? '#f87171' : '#fb923c';
 
   return (

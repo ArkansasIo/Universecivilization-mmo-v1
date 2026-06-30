@@ -103,7 +103,7 @@ export function useMegastructureManager() {
     }
   };
 
-  const continueConstruction = async (megastructureId: string, resources: {
+  const continueConstruction = async (megastructureId: string, _resources: {
     metal: number;
     crystal: number;
     deuterium: number;

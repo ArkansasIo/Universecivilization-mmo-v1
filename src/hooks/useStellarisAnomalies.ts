@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
 
 export type AnomalyCategory =
   | 'precursor' | 'spatial' | 'biological' | 'technological'

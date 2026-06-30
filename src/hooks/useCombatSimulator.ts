@@ -37,7 +37,7 @@ export function useCombatSimulator() {
   const simulateCombat = useCallback(async (
     attackerFleet: Record<string, number>,
     defenderFleet: Record<string, number>,
-    defenderDefenses?: Record<string, number>
+    _defenderDefenses?: Record<string, number>
   ): Promise<CombatResult> => {
     setSimulating(true);
 
@@ -52,8 +52,8 @@ export function useCombatSimulator() {
         destroyer: { attack: 2000, defense: 500, shield: 500, hull: 11000 }
       };
 
-      let attackerShips = { ...attackerFleet };
-      let defenderShips = { ...defenderFleet };
+      const attackerShips = { ...attackerFleet };
+      const defenderShips = { ...defenderFleet };
       const combatLog: string[] = [];
       let rounds = 0;
       const maxRounds = 6;

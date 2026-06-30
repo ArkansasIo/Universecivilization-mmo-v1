@@ -123,7 +123,7 @@ export const useRaiding = (playerId: string) => {
         .eq('player_id', targetPlanet.player_id)
         .maybeSingle();
 
-      let attackerPower = attackerShips.reduce((sum, ship) => {
+      const attackerPower = attackerShips.reduce((sum, ship) => {
         return sum + (ship.quantity * (ship.attack || 100));
       }, 0);
 

@@ -1,7 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { supabase } from '../../lib/supabase';
+import { useState } from 'react';
 import RecipeCompendium from './components/RecipeCompendium';
 import MaterialWishlistPanel from '@/components/feature/MaterialWishlistPanel';
 
@@ -32,14 +29,11 @@ interface CraftingRecipe {
 }
 
 export default function CraftingPage() {
-  const navigate = useNavigate();
-  const { user } = useAuth();
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [selectedRecipe, setSelectedRecipe] = useState<CraftingRecipe | null>(null);
   const [craftQuantity, setCraftQuantity] = useState(1);
   const [craftingQueue, setCraftingQueue] = useState<any[]>([]);
-  const [playerInventory, setPlayerInventory] = useState<any>();
-  const [playerSkills, setPlayerSkills] = useState<any>({
+  const [playerSkills] = useState<any>({
     weaponsmithing: 15,
     armorsmithing: 12,
     engineering: 18,
@@ -209,13 +203,13 @@ export default function CraftingPage() {
     return colors[rarity] || 'text-gray-400';
   };
 
-  const canCraft = (recipe: CraftingRecipe) => {
+  const canCraft = () => {
     // Check materials (mock check)
     return true;
   };
 
   const handleCraft = async (recipe: CraftingRecipe) => {
-    if (!canCraft(recipe)) {
+    if (!canCraft()) {
       alert('⚠️ Insufficient Materials!\n\nYou don\'t have enough materials to craft this item.');
       return;
     }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
 interface AllianceWar {
@@ -35,9 +35,9 @@ export const useAllianceWar = (allianceId: string | null) => {
     if (allianceId) {
       loadWarData();
     }
-  }, [allianceId]);
+  }, [allianceId, loadWarData]);
 
-  const loadWarData = async () => {
+  const loadWarData = useCallback(async () => {
     try {
       // Load current active war
       const { data: activeWar } = await supabase
@@ -85,7 +85,7 @@ export const useAllianceWar = (allianceId: string | null) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [allianceId]);
 
   const declareWar = async (targetAllianceId: string) => {
     try {

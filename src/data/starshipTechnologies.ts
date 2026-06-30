@@ -3,7 +3,7 @@
 // 50+ technologies organized by TechClass with effects, costs, prerequisites
 // ═══════════════════════════════════════════════════════════════════════════
 
-import { TechClass, TechCategory, TechType, TECH_SUB_CLASSES, TECH_SUB_CATEGORIES, TECH_SUB_TYPES, TECH_SUB_STATS, BUFF_SUB_TYPES, DEBUFF_SUB_TYPES } from '../config/starshipTechTree';
+import { TechClass, TechCategory, TechType, SHIP_TECH_ACCESS } from '../config/starshipTechTree';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Tech Effect — modifies a specific substat on a ship
@@ -1096,7 +1096,7 @@ export function getTechsByCategory(category: TechCategory): StarshipTechDef[] {
 
 /** Get technologies accessible to a given ship class */
 export function getTechsForShipClass(shipClass: string): StarshipTechDef[] {
-  const { SHIP_TECH_ACCESS } = require('../config/starshipTechTree');
+
   const allowedClasses = SHIP_TECH_ACCESS[shipClass] ?? [];
   return Object.values(STARSHIP_TECHNOLOGIES).filter(t =>
     allowedClasses.includes(t.techClass)

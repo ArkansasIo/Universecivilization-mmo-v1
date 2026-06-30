@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useFleetFormations } from '../../hooks/useFleetFormations';
+import PageLoading from '@/components/PageLoading';
 
 export default function FleetFormationsPage() {
   const {
@@ -51,11 +52,7 @@ export default function FleetFormationsPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-white text-xl">Loading Formations...</div>
-      </div>
-    );
+    return <PageLoading message="Loading Formations..." className="h-64 text-white" />;
   }
 
   return (

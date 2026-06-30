@@ -3,6 +3,7 @@ import { useInterstellarObjects } from '../../hooks/useInterstellarObjects';
 import SpaceCanvas from '../../components/feature/SpaceCanvas';
 import { Galaxy3D, Planet3D, Star3D } from '../../components/feature/Planet3D';
 import type { PlanetType, StarType } from '../../components/feature/Planet3D';
+import PageLoading from '@/components/PageLoading';
 
 export default function UniversePage() {
   const {
@@ -13,17 +14,13 @@ export default function UniversePage() {
     loading,
     currentUniverse,
     setCurrentUniverse,
-    startExplorationMission,
     scanObject,
     harvestResources,
     investigateAnomaly,
   } = useInterstellarObjects();
 
   const [activeTab, setActiveTab] = useState<'universes' | 'galaxies' | 'objects' | 'phenomena' | 'anomalies' | 'missions'>('universes');
-  const [selectedUniverse, setSelectedUniverse] = useState<any>(null);
-  const [selectedGalaxy, setSelectedGalaxy] = useState<any>(null);
-  const [selectedObject, setSelectedObject] = useState<any>(null);
-  const [selectedAnomaly, setSelectedAnomaly] = useState<any>(null);
+
   const [objectFilter, setObjectFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -69,23 +66,20 @@ export default function UniversePage() {
   ];
 
   const handleScanObject = async (objectId: string) => {
-    try { await scanObject(objectId); } catch (e) { /* ignore */ }
+    try { await scanObject(objectId); } catch { /* ignore */ }
   };
 
   const handleHarvestObject = async (objectId: string) => {
-    try { await harvestResources(objectId, 'fleet-1'); } catch (e) { /* ignore */ }
+    try { await harvestResources(objectId, 'fleet-1'); } catch { /* ignore */ }
   };
 
   const handleInvestigateAnomaly = async (anomalyId: string) => {
     try {
-      const result = await investigateAnomaly(anomalyId);
-      setSelectedAnomaly(result);
-    } catch (e) { /* ignore */ }
+      await investigateAnomaly(anomalyId);
+    } catch { /* ignore */ }
   };
 
-  const handleStartMission = async (targetId: string, targetType: any, missionType: any) => {
-    try { await startExplorationMission(targetId, targetType, missionType, 'fleet-1'); } catch (e) { /* ignore */ }
-  };
+
 
   const filteredObjects = objects.filter(obj => {
     const matchesFilter = objectFilter === 'all' || obj.type === objectFilter;
@@ -93,23 +87,12 @@ export default function UniversePage() {
     return matchesFilter && matchesSearch;
   });
 
-  const getObjectIcon = (type: string) => {
-    const icons: Record<string, string> = {
-      asteroid: 'ri-meteor-line', nebula: 'ri-cloud-line', black_hole: 'ri-focus-3-line',
-      wormhole: 'ri-loop-right-line', pulsar: 'ri-flashlight-line', quasar: 'ri-sun-line',
-      supernova: 'ri-fire-line', comet: 'ri-send-plane-line', space_station: 'ri-building-line',
-      derelict_ship: 'ri-ship-line',
-    };
-    return icons[type] || 'ri-star-line';
-  };
-
   if (loading) {
     return (
-      <div className="relative flex items-center justify-center min-h-screen overflow-hidden" style={{ background: '#020408' }}>
+      <div className="relative min-h-screen overflow-hidden" style={{ background: '#020408' }}>
         <SpaceCanvas starCount={400} showNebulae />
-        <div className="relative z-10 text-center">
-          <div className="inline-block w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-          <p className="text-lg text-cyan-300 font-semibold">Initializing Universe Explorer...</p>
+        <div className="absolute inset-0 z-10">
+          <PageLoading message="Initializing Universe Explorer..." className="h-full text-cyan-300" messageClassName="font-semibold" />
         </div>
       </div>
     );

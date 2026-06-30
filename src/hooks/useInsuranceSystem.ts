@@ -60,7 +60,7 @@ export function useInsuranceSystem() {
 
     try {
       setError(null);
-      const { data: resources } = await supabase
+      const { data: _resources } = await supabase
         .from('player_resources')
         .select('imperial_credits, republic_credits')
         .eq('user_id', user.id)
@@ -69,7 +69,7 @@ export function useInsuranceSystem() {
       // Generate realistic insurance policies
       const generatedPolicies: InsurancePolicy[] = generatePolicies();
 
-      const { data: existingPolicies, error: fetchError } = await supabase
+      const { data: existingPolicies, error: _fetchError } = await supabase
         .from('economy_transactions')
         .select('*')
         .eq('player_id', user.id)
@@ -128,9 +128,9 @@ export function useInsuranceSystem() {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, generatePolicies]);
 
-  const generatePolicies = (): InsurancePolicy[] => {
+  const generatePolicies = useCallback((): InsurancePolicy[] => {
     const ships = [
       { name: 'ISS Vanguard', type: 'Battleship', value: 8500000 },
       { name: 'ISS Shadowhawk', type: 'Cruiser', value: 3200000 },
@@ -164,7 +164,7 @@ export function useInsuranceSystem() {
         expires_at: new Date(Date.now() + (i < 5 ? [7, 14, 30, 30, 14][i] : -1) * 86400000).toISOString(),
       };
     });
-  };
+  }, [user]);
 
   const purchaseInsurance = async (
     shipId: string,
@@ -202,7 +202,7 @@ export function useInsuranceSystem() {
         .eq('user_id', user.id);
 
       // Record transaction
-      const expiresAt = new Date(Date.now() + durationDays * 86400000);
+      const _expiresAt = new Date(Date.now() + durationDays * 86400000);
       const payoutAmount = Math.floor(shipValue * coveragePercentage / 100);
 
       await supabase.from('economy_transactions').insert({

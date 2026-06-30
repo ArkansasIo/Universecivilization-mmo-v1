@@ -94,7 +94,7 @@ Deno.serve(async (req) => {
     });
 
     if (!resendRes.ok) {
-      const errBody = await resendRes.json().catch(() => ());
+      const errBody = await resendRes.json().catch(() => ({}));
       return new Response(
         JSON.stringify({
           success: false,

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
 export interface DiplomaticRelation {
@@ -51,9 +51,9 @@ export const useDiplomacy = (playerId: string) => {
     if (playerId) {
       loadDiplomaticData();
     }
-  }, [playerId]);
+  }, [playerId, loadDiplomaticData]);
 
-  const loadDiplomaticData = async () => {
+  const loadDiplomaticData = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -81,7 +81,7 @@ export const useDiplomacy = (playerId: string) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [playerId]);
 
   const sendProposal = async (
     targetPlayerId: string,

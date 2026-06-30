@@ -86,8 +86,8 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
 
       // If username provided, resolve email via edge function (bypasses RLS)
       if (!isEmail) {
-        const supabaseUrl = (import.meta.env.VITE_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '').replace(/^[\"']|[\"']$/g, '');
-        const anonKey = (import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY || '').replace(/^[\"']|[\"']$/g, '');
+        const supabaseUrl = (import.meta.env.VITE_PUBLIC_SUPABASE_URL || '').replace(/\/$/, '').replace(/^["']|["']$/g, '');
+        const anonKey = (import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY || '').replace(/^["']|["']$/g, '');
 
         const response = await fetch(`${supabaseUrl}/functions/v1/resolve-admin-email`, {
           method: 'POST',

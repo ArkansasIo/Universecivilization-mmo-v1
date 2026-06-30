@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
 interface ShipUpgrade {
@@ -39,7 +39,7 @@ export const useShipUpgrades = (playerId: string) => {
     { type: 'reactor', name: 'Power Reactor', bonus: 'attack', icon: 'ri-flashlight-line' }
   ];
 
-  const fetchShipsWithUpgrades = async () => {
+  const fetchShipsWithUpgrades = useCallback(async () => {
     try {
       const { data: fleetData } = await supabase
         .from('fleets')
@@ -76,7 +76,7 @@ export const useShipUpgrades = (playerId: string) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [playerId]);
 
   const installUpgrade = async (
     fleetShipId: string,
@@ -232,7 +232,7 @@ export const useShipUpgrades = (playerId: string) => {
     if (playerId) {
       fetchShipsWithUpgrades();
     }
-  }, [playerId]);
+  }, [playerId, fetchShipsWithUpgrades]);
 
   return {
     ships,

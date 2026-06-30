@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { getOfficerArt } from '@/data/gameArtwork';
 
 const GOLD = '#d4a853';

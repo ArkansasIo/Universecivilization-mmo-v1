@@ -40,7 +40,7 @@ Deno.serve(async (req) => {
     }
 
     // Look up the debris field at these coordinates
-    const { data: debrisField, error: debrisErr } = await supabase
+    const { data: debrisField } = await supabase
       .from('debris_fields')
       .select('*')
       .eq('galaxy', target_galaxy)

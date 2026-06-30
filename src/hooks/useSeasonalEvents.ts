@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
 interface SeasonalEvent {
@@ -51,9 +51,9 @@ export const useSeasonalEvents = (playerId: string) => {
       loadEvents();
       loadPlayerProgress();
     }
-  }, [playerId]);
+  }, [playerId, loadEvents, loadPlayerProgress]);
 
-  const loadEvents = async () => {
+  const loadEvents = useCallback(async () => {
     try {
       // Generate seasonal events
       const now = new Date();
@@ -160,9 +160,9 @@ export const useSeasonalEvents = (playerId: string) => {
       console.error('Error loading events:', error);
       setLoading(false);
     }
-  };
+  }, [playerId]);
 
-  const loadPlayerProgress = async () => {
+  const loadPlayerProgress = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('events_participation')
@@ -187,7 +187,7 @@ export const useSeasonalEvents = (playerId: string) => {
     } catch (error) {
       console.error('Error loading player progress:', error);
     }
-  };
+  }, [playerId]);
 
   const joinEvent = async (eventId: string) => {
     try {

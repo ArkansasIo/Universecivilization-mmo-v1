@@ -3,6 +3,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useMasterCrafting } from '../../hooks/useMasterCrafting';
 import { craftingItems } from '../../data/craftingItems';
 import { craftingMaterials } from '../../data/craftingMaterials';
+import PageLoading from '@/components/PageLoading';
 
 const MasterCraftingPage = () => {
   const { user } = useAuth();
@@ -110,11 +111,7 @@ const MasterCraftingPage = () => {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading Master Crafting System...</div>
-      </div>
-    );
+    return <PageLoading message="Loading Master Crafting System..." className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white" />;
   }
 
   return (

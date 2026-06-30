@@ -47,7 +47,7 @@ export function useMessaging() {
 
     // Fetch sender usernames from profiles
     const senderIds = [...new Set(data.map(m => m.sender_id).filter(Boolean))];
-    let nameMap: Record<string, string> = {};
+    const nameMap: Record<string, string> = {};
     if (senderIds.length > 0) {
       const { data: profiles } = await supabase
         .from('profiles')
@@ -78,7 +78,7 @@ export function useMessaging() {
     if (error || !data || !mountedRef.current) return;
 
     const receiverIds = [...new Set(data.map(m => m.receiver_id).filter(Boolean))];
-    let nameMap: Record<string, string> = {};
+    const nameMap: Record<string, string> = {};
     if (receiverIds.length > 0) {
       const { data: profiles } = await supabase
         .from('profiles')

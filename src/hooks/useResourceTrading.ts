@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
 export interface TradeOffer {
@@ -57,7 +57,7 @@ export const useResourceTrading = (playerId: string) => {
   ];
 
   // Load market data
-  const loadMarketData = async () => {
+  const loadMarketData = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -140,7 +140,7 @@ export const useResourceTrading = (playerId: string) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [playerId]);
 
   // Calculate market prices for all resources
   const calculateMarketPrices = async () => {
@@ -405,7 +405,7 @@ export const useResourceTrading = (playerId: string) => {
       const interval = setInterval(loadMarketData, 30000);
       return () => clearInterval(interval);
     }
-  }, [playerId]);
+  }, [playerId, loadMarketData]);
 
   return {
     myOffers,

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getColonyArt } from '@/data/gameArtwork';
 import { RACES, getRaceById, type RaceDefinition, type RaceId } from '@/data/playerRaces';
@@ -76,7 +76,6 @@ const bonusColorMap: Record<string, { icon: string; color: string; label: string
 export default function EmpirePage() {
   const navigate = useNavigate();
   const { profile } = useAuth();
-  const [selectedGovernment, setSelectedGovernment] = useState<Government | null>(null);
   const [showGovernmentModal, setShowGovernmentModal] = useState(false);
   const [showRaceChangeModal, setShowRaceChangeModal] = useState(false);
   const [colonyFilter, setColonyFilter] = useState<string>('all');

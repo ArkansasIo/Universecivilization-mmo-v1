@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useQuestSystem } from '../../hooks/useQuestSystem';
 
+import PageLoading from '@/components/PageLoading';
+
 export default function QuestsPage() {
   const { quests, loading, claimRewards } = useQuestSystem();
   const [selectedTab, setSelectedTab] = useState<'active' | 'completed'>('active');
@@ -19,14 +21,7 @@ export default function QuestsPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-400 mb-4"></div>
-          <div className="text-cyan-400">Loading quests...</div>
-        </div>
-      </div>
-    );
+    return <PageLoading message="Loading quests..." className="h-64 text-cyan-400" spinnerSize="md" />;
   }
 
   return (

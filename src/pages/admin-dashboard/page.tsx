@@ -4,6 +4,7 @@ import { useAdminAuth } from '../../contexts/AdminAuthContext';
 import { useAdminPanel } from '../../hooks/useAdminPanel';
 import { supabase } from '../../lib/supabase';
 import VerificationTab from './components/VerificationTab';
+import PageLoading from '@/components/PageLoading';
 
 interface ServerSetting {
   id: number;
@@ -33,8 +34,6 @@ export default function AdminDashboard() {
     banPlayer,
     unbanPlayer,
     giveResources,
-    adjustPlayerLevel,
-    deletePlayer,
     broadcastMessage,
   } = useAdminPanel();
 
@@ -217,14 +216,7 @@ export default function AdminDashboard() {
   }, {});
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-[#08080F] flex items-center justify-center">
-        <div className="text-center">
-          <i className="ri-loader-4-line text-4xl text-[#D4A017] animate-spin"></i>
-          <p className="text-[#908070] mt-4">Loading admin panel...</p>
-        </div>
-      </div>
-    );
+    return <PageLoading message="Loading admin panel..." className="min-h-screen bg-[#08080F] text-[#D4A017]" />;
   }
 
   return (

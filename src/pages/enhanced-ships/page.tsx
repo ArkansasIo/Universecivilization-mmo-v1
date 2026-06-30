@@ -1,21 +1,15 @@
 import { useState } from 'react';
 import { useEnhancedShips } from '../../hooks/useEnhancedShips';
 import { enhancedShips } from '../../data/enhancedShips';
+import PageLoading from '@/components/PageLoading';
 
 export default function EnhancedShipsPage() {
-  const { ships, loading, buildShip, repairShip, upgradeShip, levelUpShip, calculateShipPower } = useEnhancedShips();
+  const { loading, buildShip, calculateShipPower } = useEnhancedShips();
   const [selectedShip, setSelectedShip] = useState<typeof enhancedShips[0] | null>(null);
   const [activeTab, setActiveTab] = useState<'overview' | 'stats' | 'weapons' | 'systems'>('overview');
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white text-lg">Loading Enhanced Ships...</p>
-        </div>
-      </div>
-    );
+    return <PageLoading message="Loading Enhanced Ships..." className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-purple-500" />;
   }
 
   return (

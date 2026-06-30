@@ -110,7 +110,7 @@ export function useEspionage() {
       const success = Math.random() < successChance;
       const detected = Math.random() < detectionChance;
 
-      let result: any = { success, detected };
+      const result: any = { success, detected };
 
       if (success) {
         if (mission.mission_type === 'spy') {

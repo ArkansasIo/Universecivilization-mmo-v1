@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useResourceTrading } from '../../hooks/useResourceTrading';
 import { useAuth } from '../../contexts/AuthContext';
+import PageLoading from '@/components/PageLoading';
 
 export default function ResourceTradingPage() {
   const { user } = useAuth();
@@ -14,8 +15,6 @@ export default function ResourceTradingPage() {
     createOffer,
     buyOffer,
     cancelOffer,
-    getMarketPrice,
-    getResourceOffers
   } = useResourceTrading(user?.id || '');
 
   const [activeTab, setActiveTab] = useState<'market' | 'my-offers' | 'history' | 'prices'>('market');
@@ -92,11 +91,7 @@ export default function ResourceTradingPage() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading Resource Trading Market...</div>
-      </div>
-    );
+    return <PageLoading message="Loading Resource Trading Market..." className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white" />;
   }
 
   return (

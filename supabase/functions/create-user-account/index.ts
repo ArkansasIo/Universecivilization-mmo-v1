@@ -238,10 +238,11 @@ serve(async (req) => {
       JSON.stringify({ success: true, userId, email: emailLower, username }),
       { status: 200, headers: { 'Content-Type': 'application/json', ...CORS_HEADERS } }
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Account creation error:', err);
+    const msg = err instanceof Error ? err.message : String(err);
     return new Response(
-      JSON.stringify({ error: err?.message || 'Unexpected server error during account creation' }),
+      JSON.stringify({ error: msg }),
       { status: 500, headers: { 'Content-Type': 'application/json', ...CORS_HEADERS } }
     );
   }

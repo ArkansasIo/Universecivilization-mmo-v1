@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
-import { travelSystems, TravelSystem, calculateTravelTime, calculateTravelCost, canUseSystem } from '../data/travelSystems';
+import { travelSystems, calculateTravelTime, calculateTravelCost, canUseSystem } from '../data/travelSystems';
 
 interface TravelRoute {
   id: string;

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useShipUpgrades } from '../../hooks/useShipUpgrades';
+import PageLoading from '@/components/PageLoading';
 
 export default function ShipUpgradesPage() {
   const navigate = useNavigate();
@@ -8,21 +9,7 @@ export default function ShipUpgradesPage() {
   const { ships, loading, upgradeTypes, installUpgrade, removeUpgrade, upgradeShipLevel } = useShipUpgrades(playerId);
   const [selectedShip, setSelectedShip] = useState<string | null>(null);
   const [selectedUpgradeType, setSelectedUpgradeType] = useState<string>('');
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [toastMessage, setToastMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
-
-  const handleInstallUpgrade = async () => {
-    if (!selectedShip || !selectedUpgradeType) return;
-
-    setToastMessage(null);
-    const result = await installUpgrade(selectedShip, selectedUpgradeType, 1);
-    setToastMessage({ text: result.message, type: result.success ? 'success' : 'error' });
-    
-    if (result.success) {
-      setShowUpgradeModal(false);
-      setSelectedUpgradeType('');
-    }
-  };
 
   const handleRemoveUpgrade = async (upgradeId: string) => {
     setToastMessage(null);
@@ -39,14 +26,8 @@ export default function ShipUpgradesPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-cyan-400 text-xl">Loading ship upgrades...</div>
-      </div>
-    );
+    return <PageLoading message="Loading ship upgrades..." className="h-64 text-cyan-400" />;
   }
-
-  const selectedShipData = ships.find(s => s.id === selectedShip);
 
   return (
     <div className="p-8">
@@ -191,7 +172,6 @@ export default function ShipUpgradesPage() {
                   <button
                     onClick={() => {
                       setSelectedShip(ship.id);
-                      setShowUpgradeModal(true);
                     }}
                     disabled={usedSlots >= totalSlots}
                     className="flex-1 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-700 disabled:text-slate-500 text-white rounded-lg transition-colors whitespace-nowrap text-sm"

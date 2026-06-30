@@ -29,16 +29,16 @@ export function useTutorialSystem() {
     if (user) {
       loadTutorialProgress();
     }
-  }, [user]);
+  }, [user, loadTutorialProgress]);
 
-  const loadTutorialProgress = () => {
+  const loadTutorialProgress = useCallback(() => {
     if (!user) return;
 
     const saved = localStorage.getItem(`tutorials_${user.id}`);
     if (saved) {
       setTutorialsCompleted(JSON.parse(saved));
     }
-  };
+  }, [user]);
 
   const TUTORIALS: Record<string, Tutorial> = {
     getting_started: {

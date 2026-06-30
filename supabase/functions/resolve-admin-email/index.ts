@@ -11,14 +11,14 @@ Deno.serve(async (req) => {
   }
 
   try {
-    let body: any = {};
+    let body: unknown = {};
     try {
       body = await req.json();
     } catch {
       // ignore parse errors
     }
 
-    const { username } = body;
+    const { username } = body as { username?: string };
 
     if (!username || typeof username !== "string") {
       return new Response(
@@ -48,9 +48,9 @@ Deno.serve(async (req) => {
       JSON.stringify({ success: true, email: data?.email ?? null }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     return new Response(
-      JSON.stringify({ success: false, error: err.message ?? String(err) }),
+      JSON.stringify({ success: false, error: err instanceof Error ? err.message : String(err) }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

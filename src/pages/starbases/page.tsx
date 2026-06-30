@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { supabase } from '../../lib/supabase';
 
 interface Starbase {
   id: string;
@@ -65,12 +64,11 @@ interface StarbaseType {
 }
 
 export default function StarbasesPage() {
-  const { user } = useAuth();
+  useAuth();
   const [starbases, setStarbases] = useState<Starbase[]>([]);
   const [selectedBase, setSelectedBase] = useState<Starbase | null>(null);
   const [activeFilter, setActiveFilter] = useState('all');
   const [showBuildModal, setShowBuildModal] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [buildStep, setBuildStep] = useState(1);
   const [selectedLocation, setSelectedLocation] = useState<BuildLocation | null>(null);
   const [selectedType, setSelectedType] = useState<StarbaseType | null>(null);
@@ -246,8 +244,6 @@ export default function StarbasesPage() {
   }, []);
 
   const loadStarbases = async () => {
-    setLoading(true);
-    
     const mockBases: Starbase[] = [
       {
         id: '1',
@@ -397,7 +393,6 @@ export default function StarbasesPage() {
     ];
 
     setStarbases(mockBases);
-    setLoading(false);
   };
 
   const handleUpgrade = async (baseId: string) => {

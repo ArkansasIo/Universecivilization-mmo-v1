@@ -82,7 +82,7 @@ export function usePowerConsumption(options: UsePowerConsumptionOptions = {}): U
 
       // Get building details for connected buildings
       const buildingIds = conns.map((c: Record<string, unknown>) => c.building_id as number).filter(Boolean);
-      let buildingMap: Record<number, { type: string; level: number }> = {};
+      const buildingMap: Record<number, { type: string; level: number }> = {};
       if (buildingIds.length > 0) {
         const { data: buildings } = await supabase
           .from('buildings')

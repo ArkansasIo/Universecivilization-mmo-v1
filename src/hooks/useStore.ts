@@ -170,7 +170,7 @@ export const useStore = () => {
     }
   };
 
-  const purchasePremiumCurrency = async (amount: number, price: number): Promise<boolean> => {
+  const purchasePremiumCurrency = async (amount: number, _price: number): Promise<boolean> => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user || !inventory) return false;

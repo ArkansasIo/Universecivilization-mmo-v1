@@ -13,7 +13,7 @@ Deno.serve(async (req) => {
     return new Response('ok', { headers: corsHeaders });
   }
 
-  let body: any;
+  let body: unknown;
   try {
     body = await req.json();
   } catch {
@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
     );
   }
 
-  const { username, email, password, full_name, secret } = body;
+  const { username, email, password, full_name, secret } = body as { username?: string; email?: string; password?: string; full_name?: string; secret?: string };
 
   if (secret !== TEMP_SECRET) {
     return new Response(
@@ -84,7 +84,7 @@ Deno.serve(async (req) => {
   if (createError) {
     if (createError.message?.includes('already') || createError.message?.includes('taken') || createError.status === 422) {
       const { data: listData } = await supabaseAdmin.auth.admin.listUsers();
-      const found = listData?.users?.find((u: any) => u.email === email);
+      const found = listData?.users?.find((u: { email?: string }) => u.email === email);
       if (found) authUserId = found.id;
     }
     if (!authUserId) {
@@ -133,7 +133,7 @@ Deno.serve(async (req) => {
       target_id: authUserId,
       details: { note: `Root admin "${username}" bootstrapped` },
     });
-  } catch (_) { /* non-critical */ }
+  } catch { /* non-critical */ }
 
   return new Response(
     JSON.stringify({

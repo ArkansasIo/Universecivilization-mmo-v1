@@ -287,8 +287,18 @@ function buildFromPool(entry: PoolEntry): GameNotification {
     const [min, max] = entry.etaOffsetMsRange;
     eta = timestamp + min + Math.random() * (max - min);
   }
-  const { etaOffsetMsRange: _r, ...base } = entry;
-  return { ...base, id: makeId(), timestamp, eta, read: false };
+  return {
+    id: makeId(),
+    type: entry.type,
+    title: entry.title,
+    message: entry.message,
+    priority: entry.priority,
+    icon: entry.icon,
+    color: entry.color,
+    timestamp,
+    eta,
+    read: false,
+  };
 }
 
 /* ── hook ────────────────────────────────────── */

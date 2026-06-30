@@ -32,7 +32,7 @@ serve(async (req) => {
   try {
     const { data: existingUsers } = await adminClient.auth.admin.listUsers({ page: 1, perPage: 10000 });
     const demoUser = existingUsers?.users?.find(
-      (u: any) => u.email?.toLowerCase() === DEMO_EMAIL
+      (u: { email?: string }) => u.email?.toLowerCase() === DEMO_EMAIL
     );
 
     let userId: string;
@@ -149,10 +149,11 @@ serve(async (req) => {
       JSON.stringify({ success: true, email: DEMO_EMAIL, message: 'Demo account ready!' }),
       { status: 200, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } }
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Demo account error:', err);
+    const msg = err instanceof Error ? err.message : String(err);
     return new Response(
-      JSON.stringify({ success: false, error: err?.message || 'Unexpected server error.' }),
+      JSON.stringify({ success: false, error: msg }),
       { status: 500, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } }
     );
   }

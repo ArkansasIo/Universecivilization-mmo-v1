@@ -108,10 +108,10 @@ export const useShipProduction = () => {
       setQueue(activeQueue);
       localStorage.setItem(`ship_production_${user.id}`, JSON.stringify(activeQueue));
     }
-  }, [user, queue]);
+  }, [user, queue, addShipsToInventory]);
 
   // Add ships to inventory
-  const addShipsToInventory = async (shipType: string, quantity: number) => {
+  const addShipsToInventory = useCallback(async (shipType: string, quantity: number) => {
     if (!user) return;
 
     try {
@@ -144,7 +144,7 @@ export const useShipProduction = () => {
     } catch (error) {
       console.error('Error adding ships to inventory:', error);
     }
-  };
+  }, [user]);
 
   // Cancel production
   const cancelProduction = async (productionId: string) => {

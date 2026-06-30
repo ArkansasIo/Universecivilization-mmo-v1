@@ -452,9 +452,9 @@ function TacticalFeed({
    OPERATIONS COMMAND PANEL — Active fleets + queues
    ═══════════════════════════════════════════════════════════════════════ */
 function OperationsPanel({
-  fleets, buildQueue, researchQueue, loading, userId,
+  fleets, buildQueue, researchQueue, loading,
 }: {
-  fleets: any[]; buildQueue: any[]; researchQueue: any[]; loading: boolean; userId?: string;
+  fleets: any[]; buildQueue: any[]; researchQueue: any[]; loading: boolean;
 }) {
   const navigate = useNavigate();
 
@@ -731,12 +731,149 @@ function TimeEventsBanner({ timeEvents }: { timeEvents: ReturnType<typeof useTim
 /* ═══════════════════════════════════════════════════════════════════════
    MAIN DASHBOARD PAGE
    ═══════════════════════════════════════════════════════════════════════ */
+function OverviewHeader({
+  commanderName,
+  currentPlanet,
+  planetCount,
+  warAlert,
+  stats,
+  resources,
+  onCollect,
+  onNavigate,
+}: {
+  commanderName: string;
+  currentPlanet: any;
+  planetCount: number;
+  warAlert: string;
+  stats: {
+    totalFleetPower: number;
+    totalDefensePower: number;
+    totalResearchPoints: number;
+    totalBuildings: number;
+    totalShips: number;
+    battlesWon: number;
+    battlesLost: number;
+    rank: number;
+  };
+  resources: any;
+  onCollect: () => void;
+  onNavigate: (path: string) => void;
+}) {
+  const score = stats.totalBuildings * 1000 + stats.totalFleetPower + stats.totalResearchPoints;
+  const healthItems = [
+    { label: 'Fleet', value: formatNum(stats.totalFleetPower), icon: 'ri-rocket-2-line', color: '#5bc0be' },
+    { label: 'Defense', value: formatNum(stats.totalDefensePower), icon: 'ri-shield-star-line', color: '#f87171' },
+    { label: 'Research', value: formatNum(stats.totalResearchPoints), icon: 'ri-flask-line', color: '#a78bfa' },
+  ];
+
+  return (
+    <section className="mb-4 overflow-hidden rounded-lg border border-[#1e2a36] bg-[#080b0f]">
+      <div className="relative">
+        {currentPlanet?.image_url ? (
+          <img
+            src={currentPlanet.image_url}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover object-top opacity-25"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(91,192,190,0.20),transparent_34%),linear-gradient(135deg,#0c1118_0%,#080b0f_58%,#11110b_100%)]" />
+        )}
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,11,15,0.96)_0%,rgba(8,11,15,0.86)_48%,rgba(8,11,15,0.64)_100%)]" />
+
+        <div className="relative grid gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:p-5">
+          <div className="min-w-0">
+            <div className="mb-3 flex flex-wrap items-center gap-2">
+              <span className="rounded border border-[#34d399]/30 bg-[#34d399]/10 px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-[#34d399]">
+                Command Overview
+              </span>
+              <span className="rounded border border-[#1e2a36] bg-black/30 px-2 py-1 text-[10px] font-semibold text-[#8892aa]">
+                Rank #{stats.rank}
+              </span>
+              <span className="rounded border border-[#1e2a36] bg-black/30 px-2 py-1 text-[10px] font-semibold text-[#8892aa]">
+                {planetCount} worlds
+              </span>
+            </div>
+
+            <div className="mb-5">
+              <h1 className="text-2xl font-black leading-tight text-white md:text-4xl" style={{ fontFamily: 'Orbitron, sans-serif' }}>
+                {commanderName}'s Command Deck
+              </h1>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-[#8892aa]">
+                {currentPlanet?.name || 'Primary world'} is the active command focus. Fleet posture, resources, queues, and live alerts are gathered here for quick decisions.
+              </p>
+            </div>
+
+            <div className="grid gap-2 sm:grid-cols-3">
+              {healthItems.map((item) => (
+                <div key={item.label} className="rounded-lg border border-white/[0.06] bg-black/25 p-3">
+                  <div className="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#5a6577]">
+                    <i className={item.icon} style={{ color: item.color }} />
+                    {item.label}
+                  </div>
+                  <div className="text-lg font-black text-white" style={{ fontFamily: 'Orbitron, sans-serif' }}>{item.value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-[#1e2a36] bg-black/35 p-3">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-[#5a6577]">Empire Score</div>
+                <div className="mt-1 text-3xl font-black text-white" style={{ fontFamily: 'Orbitron, sans-serif' }}>{formatNum(score)}</div>
+              </div>
+              <button
+                type="button"
+                onClick={() => onNavigate('/leaderboard')}
+                className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#d4a853]/30 bg-[#d4a853]/10 text-[#d4a853] transition hover:brightness-125"
+                aria-label="Open leaderboard"
+                title="Open leaderboard"
+              >
+                <i className="ri-trophy-line text-lg" />
+              </button>
+            </div>
+
+            <div className="mb-3 grid grid-cols-3 gap-2">
+              {[
+                { icon: 'ri-copper-coin-line', value: resources.metal, color: '#d4a853' },
+                { icon: 'ri-sparkling-line', value: resources.crystal, color: '#5bc0be' },
+                { icon: 'ri-drop-line', value: resources.deuterium, color: '#7bc67e' },
+              ].map((item) => (
+                <div key={item.icon} className="rounded border border-white/[0.06] bg-white/[0.03] px-2 py-2 text-center">
+                  <i className={item.icon} style={{ color: item.color }} />
+                  <div className="mt-1 text-xs font-bold text-white">{formatNum(item.value || 0)}</div>
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={onCollect}
+              className="mb-3 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#d4a853] to-[#e2c044] px-4 py-2.5 text-sm font-black text-[#080b0f] transition hover:brightness-110 active:scale-[0.99]"
+            >
+              <i className="ri-download-cloud-line" />
+              Auto-Collect Resources
+            </button>
+
+            <div className="rounded-lg border border-[#f87171]/20 bg-[#f87171]/10 px-3 py-2">
+              <div className="mb-1 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#f87171]">
+                <span className="h-2 w-2 rounded-full bg-[#f87171]" />
+                Live Alert
+              </div>
+              <p className="truncate text-xs text-[#d4d9e6]">{warAlert}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function DashboardPage() {
   const navigate = useNavigate();
   const { user, profile } = useAuth();
   const { resources: gameResources, loading: resourcesLoading } = useResources();
   const timeEvents = useTimeBasedEvents();
-  const [showDailyReward, setShowDailyReward] = useState(false);
   const [selectedPlanet, setSelectedPlanet] = useState(0);
   const [showWelcomeBack, setShowWelcomeBack] = useState(false);
   const [productionRates, setProductionRates] = useState({ metal: 0, crystal: 0, deuterium: 0, energy: 0 });
@@ -937,9 +1074,10 @@ export default function DashboardPage() {
   };
 
   const currentPlanet = dbPlanets[selectedPlanet];
+  const commanderName = profile?.username || user?.email?.split('@')[0] || 'Commander';
 
   return (
-    <div style={{ color: '#8892aa' }}>
+    <div className="min-w-0 text-[#8892aa]">
       {/* ── Toast ─── */}
       {toastMessage && (
         <div className={`fixed top-4 right-4 z-50 px-5 py-3 rounded-lg flex items-center gap-3 shadow-lg border ${
@@ -959,47 +1097,61 @@ export default function DashboardPage() {
       {showWelcomeBack && (
         <div className="px-5 pt-4 pb-1">
           <WelcomeBackCelebration
-            username={profile?.username || user?.email?.split('@')[0] || 'Commander'}
+            username={commanderName}
             onDismiss={() => setShowWelcomeBack(false)}
           />
         </div>
       )}
 
-      {/* ── News Ticker ─── */}
-      <div className="flex items-center gap-3 px-5 py-2" style={{ borderBottom: '1px solid #1e2a36', background: 'rgba(0,0,0,0.2)' }}>
-        <span className="px-2 py-0.5 text-xs font-bold rounded flex-shrink-0" style={{ background: 'rgba(248,113,113,0.2)', color: '#f87171', border: '1px solid rgba(248,113,113,0.3)' }}>
-          LIVE
-        </span>
-        <span className="text-xs truncate transition-all duration-500" style={{ color: '#6b7a95' }}>{warAlerts[tickerIndex]}</span>
-      </div>
-
       {/* ── MAIN DASHBOARD ─── */}
-      <div className="px-5 py-4">
-        {/* Server Pulse Bar */}
-        <ServerPulseBar />
+      <div className="px-3 py-4 sm:px-5">
+        <OverviewHeader
+          commanderName={commanderName}
+          currentPlanet={currentPlanet}
+          planetCount={dbPlanets.length}
+          warAlert={warAlerts[tickerIndex]}
+          stats={playerStats}
+          resources={gameResources}
+          onCollect={handleAutoCollect}
+          onNavigate={navigate}
+        />
 
         {/* Time Events Banner */}
         <TimeEventsBanner timeEvents={timeEvents} />
 
-        {/* Cinematic Planet Hero */}
-        <PlanetHero
-          planet={currentPlanet}
-          loading={sectionLoading.planets}
-          onPlanetSelect={setSelectedPlanet}
-          planets={dbPlanets}
-          selectedIndex={selectedPlanet}
-        />
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1.5fr)_minmax(360px,0.8fr)]">
+          <div className="min-w-0">
+            <PlanetHero
+              planet={currentPlanet}
+              loading={sectionLoading.planets}
+              onPlanetSelect={setSelectedPlanet}
+              planets={dbPlanets}
+              selectedIndex={selectedPlanet}
+            />
+          </div>
+
+          <div className="min-w-0">
+            <ServerPulseBar />
+            <OperationsPanel
+              fleets={dbFleets}
+              buildQueue={buildQueue}
+              researchQueue={researchQueue}
+              loading={sectionLoading.fleets || sectionLoading.queues}
+              userId={user?.id}
+            />
+          </div>
+        </div>
 
         {/* Resource HUD Gauges */}
         {sectionLoading.stats || resourcesLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <div className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-4">
             <Sk className="h-28" />
             <Sk className="h-28" />
             <Sk className="h-28" />
             <Sk className="h-28" />
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <div className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-4">
             <ResourceGauge
               label="METAL"
               icon="ri-copper-coin-line"
@@ -1037,14 +1189,14 @@ export default function DashboardPage() {
 
         {/* Empire Power Grid */}
         {sectionLoading.stats ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <div className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-4">
             <Sk className="h-32" />
             <Sk className="h-32" />
             <Sk className="h-32" />
             <Sk className="h-32" />
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <div className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-4">
             <PowerCard
               label="FLEET POWER"
               value={playerStats.totalFleetPower}
@@ -1081,40 +1233,37 @@ export default function DashboardPage() {
         )}
 
         {/* Main 2-column: Tactical Feed + Operations */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+        <div className="mb-4 grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
           <TacticalFeed events={eventLog} loading={sectionLoading.events} userId={user?.id} />
-          <OperationsPanel
-            fleets={dbFleets}
-            buildQueue={buildQueue}
-            researchQueue={researchQueue}
-            loading={sectionLoading.fleets || sectionLoading.queues}
-            userId={user?.id}
-          />
-        </div>
-
-        {/* Quick auto-collect + Command Dock */}
-        <div className="flex items-center justify-between mb-4">
-          <button
-            onClick={handleAutoCollect}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg cursor-pointer transition-all hover:brightness-110"
-            style={{ background: 'linear-gradient(90deg, #d4a853, #e2c044)', color: '#080b0f' }}
-          >
-            <i className="ri-download-cloud-line" />
-            <span className="text-sm font-bold whitespace-nowrap">Auto-Collect Resources</span>
-          </button>
-          <div className="flex items-center gap-3 text-xs" style={{ color: '#5a6577' }}>
-            <span className="flex items-center gap-1">
-              <i className="ri-copper-coin-line" style={{ color: '#d4a853' }} />
-              {formatNum(gameResources.metal || 0)}
-            </span>
-            <span className="flex items-center gap-1">
-              <i className="ri-sparkling-line" style={{ color: '#5bc0be' }} />
-              {formatNum(gameResources.crystal || 0)}
-            </span>
-            <span className="flex items-center gap-1">
-              <i className="ri-drop-line" style={{ color: '#7bc67e' }} />
-              {formatNum(gameResources.deuterium || 0)}
-            </span>
+          <div className="rounded-xl border border-[#1e2a36] bg-white/[0.015] p-3">
+            <div className="mb-3 flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#34d399]/10 text-[#34d399]">
+                <i className="ri-compass-3-line" />
+              </div>
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#8892aa]">Next Moves</h3>
+                <p className="text-xs text-[#4a5568]">Fast routes from overview</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { label: 'Fleet', icon: 'ri-rocket-line', path: '/fleet', color: '#5bc0be' },
+                { label: 'Build', icon: 'ri-building-line', path: '/buildings', color: '#d4a853' },
+                { label: 'Research', icon: 'ri-flask-line', path: '/research', color: '#a78bfa' },
+                { label: 'Market', icon: 'ri-store-2-line', path: '/marketplace', color: '#34d399' },
+              ].map((action) => (
+                <button
+                  key={action.label}
+                  type="button"
+                  onClick={() => navigate(action.path)}
+                  className="flex items-center gap-2 rounded-lg border px-3 py-2 text-left text-xs font-bold text-white transition hover:brightness-125"
+                  style={{ borderColor: `${action.color}22`, background: `${action.color}08` }}
+                >
+                  <i className={action.icon} style={{ color: action.color }} />
+                  {action.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 

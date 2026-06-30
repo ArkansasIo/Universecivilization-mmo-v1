@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { defenses, Defense, DefenseType, getDefensesByType, calculateDefenseEffectiveness, getDefensePowerRating } from '../../data/defenses';
+import { defenses, Defense, DefenseType, getDefensesByType, getDefensePowerRating } from '../../data/defenses';
 import { supabase } from '../../lib/supabase';
+import PageLoading from '@/components/PageLoading';
 
 const GOLD = '#d4a853';
 const BORDER = '#1e2a36';
@@ -21,7 +22,6 @@ export default function DefensePage() {
     darkMatter: 5000
   });
   const [playerDefenses, setPlayerDefenses] = useState<{[key: string]: {count: number, level: number}}>({});
-  const [buildQueue, setBuildQueue] = useState<Array<{defenseId: string, count: number, timeRemaining: number}>>([]);
   const [showMissileModal, setShowMissileModal] = useState(false);
   const [missileTarget, setMissileTarget] = useState('');
   const [missileCount, setMissileCount] = useState(1);
@@ -337,14 +337,7 @@ export default function DefensePage() {
   }, 0);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white text-xl">Loading Defense Systems...</p>
-        </div>
-      </div>
-    );
+    return <PageLoading message="Loading Defense Systems..." className="h-64 text-amber-400" />;
   }
 
   if (error) {

@@ -1,57 +1,11 @@
 import { useState } from 'react';
-import { worldBosses, leaderboardData } from '../../data/worldBosses';
-import { arcBosses, arcBossLeaderboard } from '../../data/arcBosses';
-import type { WorldBossData } from '../../data/worldBosses';
-import type { ArcBossData } from '../../data/arcBosses';
+import { worldBosses } from '../../data/worldBosses';
+import { arcBosses } from '../../data/arcBosses';
+
 
 export default function WorldBossesPage() {
   const [activeTab, setActiveTab] = useState('active');
   const [bossCategory, setBossCategory] = useState<'world' | 'arc'>('world');
-  const [selectedBoss, setSelectedBoss] = useState<WorldBossData | ArcBossData | null>(null);
-  const [selectedArc, setSelectedArc] = useState(0);
-
-  const formatTime = (seconds: number) => {
-    const days = Math.floor(seconds / 86400);
-    const hours = Math.floor((seconds % 86400) / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    if (days > 0) return `${days}d ${hours}h`;
-    if (hours > 0) return `${hours}h ${minutes}m`;
-    return `${minutes}m`;
-  };
-
-  const formatNumber = (num: number) => {
-    if (num >= 1000000000) return `${(num / 1000000000).toFixed(1)}B`;
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-    return num.toString();
-  };
-
-  const getDifficultyColor = (difficulty: string) => {
-    if (difficulty.startsWith('Arc')) return 'text-amber-400 bg-amber-400/20';
-    switch(difficulty) {
-      case 'Normal': return 'text-green-400 bg-green-400/20';
-      case 'Heroic': return 'text-blue-400 bg-blue-400/20';
-      case 'Epic': return 'text-purple-400 bg-purple-400/20';
-      case 'Legendary': return 'text-orange-400 bg-orange-400/20';
-      case 'Mythic': return 'text-red-400 bg-red-400/20';
-      case 'Godlike': return 'text-cyan-400 bg-cyan-400/20';
-      default: return 'text-gray-400 bg-gray-400/20';
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch(status) {
-      case 'active': return 'text-green-400 bg-green-400/20';
-      case 'defeated': return 'text-gray-400 bg-gray-400/20';
-      case 'upcoming': return 'text-yellow-400 bg-yellow-400/20';
-      case 'locked': return 'text-red-400 bg-red-400/20';
-      default: return 'text-cyan-400 bg-cyan-400/20';
-    }
-  };
-
-  const activeArcCount = arcBosses.filter(a => a.status === 'active').length;
-  const defeatedArcCount = arcBosses.filter(a => a.status === 'defeated').length;
-  const lockedArcCount = arcBosses.filter(a => a.status === 'locked').length;
 
   const filteredWorldBosses = worldBosses.filter(boss => {
     if (bossCategory !== 'world') return false;

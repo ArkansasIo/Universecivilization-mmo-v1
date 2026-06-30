@@ -252,7 +252,7 @@ export function useBountySystem() {
     }
   };
 
-  const claimBounty = async (bountyId: string, targetId: string): Promise<{ success: boolean; message: string }> => {
+  const claimBounty = async (bountyId: string, _targetId: string): Promise<{ success: boolean; message: string }> => {
     if (!user) return { success: false, message: 'You must be logged in' };
 
     try {
@@ -346,7 +346,7 @@ export function useBountySystem() {
     }
   };
 
-  const getBountyHunterRanking = async (): Promise<string> => {
+  const getBountyHunterRanking = useCallback(async (): Promise<string> => {
     if (!user) return 'Novice Hunter';
 
     try {
@@ -370,7 +370,7 @@ export function useBountySystem() {
     } catch {
       return 'Novice Hunter';
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     const init = async () => {
@@ -383,7 +383,7 @@ export function useBountySystem() {
       setLoading(false);
     };
     init();
-  }, [user, loadBounties, loadBountyTargets, loadLeaderboard]);
+  }, [user, loadBounties, loadBountyTargets, loadLeaderboard, getBountyHunterRanking]);
 
   return {
     bounties,

@@ -67,5 +67,3 @@ export function useTheme(): ThemeContextType {
   }
   return ctx;
 }
-
-export { THEMES };

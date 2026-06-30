@@ -201,7 +201,7 @@ Deno.serve(async (req) => {
     );
   }
 
-  let body: any;
+  let body: unknown;
   try {
     body = await req.json();
   } catch {
@@ -211,7 +211,7 @@ Deno.serve(async (req) => {
     );
   }
 
-  const { attacker_fleet_id, defender_fleet_id, attacker_tech, defender_tech, mission_type = "attack" } = body;
+  const { attacker_fleet_id, defender_fleet_id, attacker_tech, defender_tech } = body as { attacker_fleet_id?: string; defender_fleet_id?: string; attacker_tech?: CombatTech; defender_tech?: CombatTech };
 
   if (!attacker_fleet_id) {
     return new Response(
@@ -247,7 +247,7 @@ Deno.serve(async (req) => {
     }
 
     // 2. Fetch defender fleet
-    let defenderFleet: any = null;
+    let defenderFleet: Record<string, unknown> | null = null;
     if (defender_fleet_id) {
       const { data: defData, error: defError } = await adminClient
         .from("fleets")
@@ -274,13 +274,13 @@ Deno.serve(async (req) => {
 
     // 4. If no defender fleet, create a minimal defense (planet defense or empty)
     const attackerShips: FleetShips = attackerFleet.ships || {};
-    const defenderShips: FleetShips = defenderFleet?.ships || {};
+    const defenderShips: FleetShips = (defenderFleet?.ships as FleetShips) || {};
 
     if (Object.keys(defenderShips).length === 0) {
       // No defending ships — attacker wins automatically
       const combatLog = {
         attacker_id: caller.id,
-        defender_id: defenderFleet?.user_id || null,
+        defender_id: (defenderFleet?.user_id as string) || null,
         attacker_name: caller.user_metadata?.username || caller.email?.split("@")[0] || "Unknown",
         defender_name: defenderFleet ? "Defender" : "Unoccupied",
         result: "attacker_victory",
@@ -414,7 +414,7 @@ Deno.serve(async (req) => {
     // 10. Create combat log
     const combatLog = {
       attacker_id: caller.id,
-      defender_id: defenderFleet?.user_id || null,
+      defender_id: (defenderFleet?.user_id as string) || null,
       attacker_name: caller.user_metadata?.username || caller.email?.split("@")[0] || "Unknown",
       defender_name: defenderFleet
         ? "Defender Fleet"
@@ -496,10 +496,11 @@ Deno.serve(async (req) => {
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Combat resolution error:", err);
+    const msg = err instanceof Error ? err.message : String(err);
     return new Response(
-      JSON.stringify({ error: err?.message || "Failed to resolve combat" }),
+      JSON.stringify({ error: msg }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

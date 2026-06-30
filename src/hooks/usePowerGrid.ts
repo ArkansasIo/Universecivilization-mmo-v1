@@ -10,7 +10,7 @@ import type {
   ConnectionType,
   GridStatus,
 } from '@/data/powerReactors';
-import { calculateReactorOutput, calculateTransmissionLoss, calculateEffectiveEfficiency } from '@/data/powerReactors';
+import { calculateReactorOutput, calculateEffectiveEfficiency } from '@/data/powerReactors';
 
 interface UsePowerGridOptions {
   planetId?: string;
@@ -83,7 +83,7 @@ export function usePowerGrid(options: UsePowerGridOptions = {}): UsePowerGridRet
   }, []);
 
   // Load or create the power grid for this planet/moon
-  const loadOrCreateGrid = useCallback(async (defs: ReactorDefinition[]) => {
+  const loadOrCreateGrid = useCallback(async (_defs: ReactorDefinition[]) => {
     const filter = planetId
       ? { planet_id: planetId }
       : moonId

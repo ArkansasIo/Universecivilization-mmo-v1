@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useAllianceSystem } from '../../hooks/useAllianceSystem';
-import { useAuth } from '../../contexts/AuthContext';
 
 const GOLD = '#d4a853';
 const BORDER = '#1e2a36';
@@ -14,7 +13,6 @@ interface AllianceWar {
 }
 
 export default function AlliancePage() {
-  const { user } = useAuth();
   const { alliance, joinAlliance, leaveAlliance, createAlliance } = useAllianceSystem();
   const [activeTab, setActiveTab] = useState<'overview' | 'members' | 'wars' | 'diplomacy' | 'treasury' | 'technology' | 'events' | 'create'>('overview');
   const [showCreateModal, setShowCreateModal] = useState(false);

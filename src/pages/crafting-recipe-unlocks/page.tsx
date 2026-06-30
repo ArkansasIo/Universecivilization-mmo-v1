@@ -13,12 +13,6 @@ const RARITY_STYLES: Record<string, { text: string; bg: string; border: string }
   Universal: { text: 'text-cyan-300', bg: 'bg-gradient-to-r from-fuchsia-500/10 to-cyan-500/10', border: 'border-cyan-400/30' },
 };
 
-const PAGE_ROUTES: Record<string, string> = {
-  forge: '/crafting-forge',
-  laboratory: '/crafting-augmentations',
-  artifacts: '/crafting-artifacts',
-};
-
 const PAGE_ICONS: Record<string, string> = {
   forge: 'ri-fire-fill',
   laboratory: 'ri-body-scan-line',

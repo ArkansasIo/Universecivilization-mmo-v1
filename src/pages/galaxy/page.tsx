@@ -503,7 +503,7 @@ export default function GalaxyPage() {
             isOwnPlanet,
             playerName: isOwnPlanet ? 'You' : (hasNpcOwner ? p.npc_owner : null),
             allianceTag: hasNpcOwner ? p.npc_alliance : null,
-            allianceName: hasNpcOwner ? (p.npc_alliance || '').replace(/[\[\]]/g, '') : null,
+            allianceName: hasNpcOwner ? (p.npc_alliance || '').replace(/[[\]]/g, '') : null,
             rank: hasNpcOwner ? p.npc_rank : null,
             points: hasNpcOwner ? p.npc_points : null,
             status: hasNpcOwner ? p.npc_status : (isOwnPlanet ? 'active' : null),

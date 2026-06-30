@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { usePlanetaryEvents } from '../../hooks/usePlanetaryEvents';
+import PageLoading from '@/components/PageLoading';
 
 export default function PlanetaryEventsPage() {
   const { events, loading, makeChoice } = usePlanetaryEvents();
@@ -14,11 +15,7 @@ export default function PlanetaryEventsPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-white text-xl">Loading Events...</div>
-      </div>
-    );
+    return <PageLoading message="Loading Events..." className="h-64 text-white" />;
   }
 
   return (

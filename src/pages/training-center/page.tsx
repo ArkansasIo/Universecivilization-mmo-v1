@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { trainingTracks } from '../../data/units/personnel';
 import { ALL_UNITS } from '../../data/units';
 import type { TrainingTrack } from '../../data/units/types';
@@ -85,9 +84,6 @@ const CATEGORY_COLORS: Record<string, { text: string; border: string; bg: string
 export default function TrainingCenterPage() {
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'civilian' | 'military' | 'government'>('all');
   const [selectedTrack, setSelectedTrack] = useState<TrainingTrack | null>(null);
-  const [capacityOverrides, setCapacityOverrides] = useState<Record<string, number>>({});
-  const [activeQueues, setActiveQueues] = useState<Record<string, number>>({});
-  const [notification, setNotification] = useState('');
 
   const filteredTracks = useMemo(() =>
     trainingTracks.filter(t => selectedCategory === 'all' || t.category === selectedCategory),
@@ -431,7 +427,6 @@ export default function TrainingCenterPage() {
                 </h2>
                 <div className="space-y-3">
                   {locked.map(track => {
-                    const colors = CATEGORY_COLORS[track.category];
                     const missingBuildings = (track.requirements.buildings || []).filter(b => !isBuildingAvailable(b));
                     return (
                       <div key={track.id} className="bg-[#0B1929] border border-slate-700/40 rounded-2xl p-5 opacity-70">

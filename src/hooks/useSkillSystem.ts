@@ -201,9 +201,9 @@ export function useSkillSystem() {
     if (user) {
       loadPlayerSkills();
     }
-  }, [user]);
+  }, [user, loadPlayerSkills]);
 
-  const loadPlayerSkills = async () => {
+  const loadPlayerSkills = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -235,7 +235,7 @@ export function useSkillSystem() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   const upgradeSkill = async (skillId: string, skillPointsAvailable: number) => {
     if (!user) return { success: false, message: 'Not authenticated' };

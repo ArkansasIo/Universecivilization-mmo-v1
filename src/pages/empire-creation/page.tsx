@@ -223,7 +223,7 @@ export default function EmpireCreationPage() {
       // Add starting fleet if military bonus selected
       if (empireData.startingBonus === 'military') {
         // Create a stationed defense fleet with correct columns
-        const { data: fleetData, error: fleetError } = await supabase
+        const { error: fleetError } = await supabase
           .from('fleets')
           .insert({
             user_id: user.id,

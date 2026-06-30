@@ -70,6 +70,15 @@ export default defineConfig({
   build: {
     sourcemap: true,
     outDir: "out",
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ['three', '@react-three/fiber', '@react-three/drei', '@react-three/postprocessing'],
+          'stellaris-data': ['./src/pages/stellaris-view/data.ts'],
+        },
+      },
+    },
   },
   resolve: {
     alias: {

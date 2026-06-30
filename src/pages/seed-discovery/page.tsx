@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSeedSystem, PORTAL_GLYPHS, seedToGlyphs, generatePlanetFromSeed, generateShipFromSeed, generateCreatureFromSeed, generateMultitoolFromSeed } from '@/hooks/useSeedSystem';
-import type { SeedType, PlanetSeed, ShipSeed, CreatureSeed, MultitoolSeed, SeedDiscovery, PortalGlyph } from '@/hooks/useSeedSystem';
+import { useSeedSystem, PORTAL_GLYPHS } from '@/hooks/useSeedSystem';
+import type { SeedType, PlanetSeed, ShipSeed, CreatureSeed, MultitoolSeed, PortalGlyph } from '@/hooks/useSeedSystem';
 
 /* ─────────────────────────────────────────────
    HELPERS
@@ -256,7 +256,6 @@ export default function SeedDiscoveryPage() {
     seedToGlyphs,
     glyphsToSeed,
     getGlyphByValue,
-    PORTAL_GLYPHS: glyphs,
   } = useSeedSystem(playerId);
 
   const [activeTab, setActiveTab] = useState<'explore' | 'catalog'>('explore');

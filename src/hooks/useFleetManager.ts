@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import { useAchievementSystem } from '@/hooks/useAchievementSystem';
@@ -50,6 +50,8 @@ export function useFleetManager() {
   const [fleets, setFleets] = useState<Fleet[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFleets, setActiveFleets] = useState<Fleet[]>([]);
+  const handleFleetArrivalRef = useRef<((fleet: Fleet) => Promise<void>) | null>(null);
+  const handleFleetReturnRef = useRef<((fleet: Fleet) => Promise<void>) | null>(null);
 
   const loadFleets = useCallback(async () => {
     if (!user) return;
@@ -111,14 +113,14 @@ export function useFleetManager() {
         
         // Check if fleet has arrived
         if (now >= arrivalTime && fleet.status === 'moving') {
-          await handleFleetArrival(fleet);
+          await handleFleetArrivalRef.current!(fleet);
         }
 
         // Check if fleet has returned
         if (fleet.return_time) {
           const returnTime = new Date(fleet.return_time);
           if (now >= returnTime && fleet.status === 'returning') {
-            await handleFleetReturn(fleet);
+            await handleFleetReturnRef.current!(fleet);
           }
         }
       }
@@ -129,6 +131,10 @@ export function useFleetManager() {
 
     return () => clearInterval(interval);
   }, [user, activeFleets]);
+
+  // Keep refs in sync
+  handleFleetArrivalRef.current = handleFleetArrival as any;
+  handleFleetReturnRef.current = handleFleetReturn as any;
 
   const calculateTravelTime = (ships: Record<string, number>, origin: string, destination: string): number => {
     // Parse coordinates
@@ -355,10 +361,6 @@ export function useFleetManager() {
       return total + (SHIP_STATS[type]?.attack || 0) * count;
     }, 0);
 
-    const shieldPower = Object.entries(fleet.ships).reduce((total, [type, count]) => {
-      return total + (SHIP_STATS[type]?.shield || 0) * count;
-    }, 0);
-
     // Simulate defender (random strength)
     const defenderStrength = Math.random() * attackPower * 1.5;
     const victory = attackPower > defenderStrength;
@@ -417,7 +419,7 @@ export function useFleetManager() {
     return { success: true, delivered: fleet.cargo };
   };
 
-  const executeSpyMission = async (fleet: Fleet) => {
+  const executeSpyMission = async (_fleet: Fleet) => {
     return {
       success: true,
       intelligence: {
@@ -432,7 +434,7 @@ export function useFleetManager() {
     };
   };
 
-  const executeColonizeMission = async (fleet: Fleet) => {
+  const executeColonizeMission = async (_fleet: Fleet) => {
     return { success: true, colonyEstablished: true };
   };
 

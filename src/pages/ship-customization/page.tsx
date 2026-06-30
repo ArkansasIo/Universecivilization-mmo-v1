@@ -111,7 +111,7 @@ export default function ShipCustomizationPage() {
 
     let totalDamage = 0;
     let totalDPS = 0;
-    let bonuses = {
+    const bonuses = {
       shields: 1,
       armor: 1,
       speed: 1,

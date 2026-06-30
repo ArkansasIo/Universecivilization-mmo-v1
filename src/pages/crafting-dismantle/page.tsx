@@ -49,7 +49,7 @@ export default function CraftingDismantlePage() {
     if (locked.has(id)) return;
     setSelected(prev => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) { next.delete(id); } else { next.add(id); }
       return next;
     });
   };
@@ -58,7 +58,7 @@ export default function CraftingDismantlePage() {
     e.stopPropagation();
     setLocked(prev => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) { next.delete(id); } else { next.add(id); }
       return next;
     });
   };
