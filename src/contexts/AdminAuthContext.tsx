@@ -1,5 +1,20 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
+
+// ── Dev-mode credentials (only active when Supabase is NOT configured) ────────
+const DEV_USERNAME = 'admin';
+const DEV_PASSWORD = 'dev';
+const DEV_SESSION_KEY = 'galactic_dev_admin_session';
+
+const DEV_ADMIN_USER = {
+  id: 'dev-admin-00000000-0000-0000-0000-000000000001',
+  username: 'admin',
+  email: 'admin@dev.local',
+  full_name: 'Admin Dev',
+  role: 'super_admin',
+  is_super_admin: true,
+  last_login: new Date().toISOString(),
+};
 
 interface AdminUser {
   id: string;
@@ -30,6 +45,11 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     checkAdminSession();
 
+    if (!isSupabaseConfigured) {
+      setLoading(false);
+      return;
+    }
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         const { data: adminData } = await supabase
@@ -57,6 +77,16 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
 
   const checkAdminSession = async () => {
     try {
+      // Dev-mode: restore session from localStorage
+      if (!isSupabaseConfigured) {
+        const stored = localStorage.getItem(DEV_SESSION_KEY);
+        if (stored === 'active') {
+          setAdminUser(DEV_ADMIN_USER);
+        }
+        setLoading(false);
+        return;
+      }
+
       const { data: { session } } = await supabase.auth.getSession();
 
       if (session?.user) {
@@ -80,6 +110,17 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (usernameOrEmail: string, password: string) => {
     try {
+      // Dev-mode bypass — no Supabase needed
+      if (!isSupabaseConfigured) {
+        const usernameMatch = usernameOrEmail === DEV_USERNAME || usernameOrEmail === DEV_ADMIN_USER.email;
+        if (usernameMatch && password === DEV_PASSWORD) {
+          localStorage.setItem(DEV_SESSION_KEY, 'active');
+          setAdminUser(DEV_ADMIN_USER);
+          return;
+        }
+        throw new Error('Invalid dev credentials. Use admin / dev');
+      }
+
       // Check if input is email or username
       const isEmail = usernameOrEmail.includes('@');
       let email = usernameOrEmail;
@@ -215,6 +256,13 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     try {
+      // Dev-mode: just clear localStorage
+      if (!isSupabaseConfigured) {
+        localStorage.removeItem(DEV_SESSION_KEY);
+        setAdminUser(null);
+        return;
+      }
+
       if (adminUser) {
         await supabase
           .from('admin_logs')

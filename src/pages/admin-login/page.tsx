@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
-import { supabase } from '../../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 
 export default function AdminLogin() {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
@@ -256,6 +256,19 @@ export default function AdminLogin() {
     }
   };
 
+  const handleDevLogin = async () => {
+    setError('');
+    setLoading(true);
+    try {
+      await signIn('admin', 'dev');
+      navigate(redirectPath);
+    } catch (err: any) {
+      setError(err.message || 'Dev login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleBootstrap = async () => {
     setBootstrapping(true);
     setBootstrapError('');
@@ -421,6 +434,42 @@ export default function AdminLogin() {
             <h1 className="text-3xl font-bold text-[#E8E0D5] mb-2" style={{ fontFamily: 'Orbitron, sans-serif' }}>Admin Access</h1>
             <p className="text-[#908070]">Secure Control Panel Login</p>
           </div>
+
+          {/* Dev-mode banner — shown when Supabase is not configured */}
+          {!isSupabaseConfigured && (
+            <div className="mb-6 p-4 rounded-xl border border-amber-400/30 bg-amber-400/8">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-5 h-5 rounded flex items-center justify-center bg-amber-400/20 flex-shrink-0">
+                  <i className="ri-code-box-line text-amber-400 text-xs"></i>
+                </div>
+                <span className="text-amber-400 font-semibold text-sm">Dev Mode — No Supabase Connected</span>
+              </div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-xs font-mono" style={{ color: '#a09080' }}>
+                  <span className="text-amber-300/70">user</span>
+                  <span className="text-[#605040] mx-1">·</span>
+                  <span className="text-white/80">admin</span>
+                  <span className="text-[#605040] mx-2">/</span>
+                  <span className="text-amber-300/70">pass</span>
+                  <span className="text-[#605040] mx-1">·</span>
+                  <span className="text-white/80">dev</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleDevLogin}
+                disabled={loading}
+                className="w-full py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                style={{ background: 'rgba(217,160,23,0.15)', border: '1px solid rgba(217,160,23,0.35)', color: '#e8b820' }}
+              >
+                {loading ? (
+                  <><i className="ri-loader-4-line animate-spin"></i> Signing in...</>
+                ) : (
+                  <><i className="ri-flashlight-line"></i> One-click Dev Login</>
+                )}
+              </button>
+            </div>
+          )}
 
           {error && (
             <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-lg flex items-start gap-3">
