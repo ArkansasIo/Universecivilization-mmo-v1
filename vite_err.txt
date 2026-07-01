@@ -1,0 +1,465 @@
+[2m12:02:18 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:18 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:18 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+[2m12:02:27 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:33 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:40 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:42 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:43 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:43 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:45 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:45 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:46 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:47 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:47 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:48 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:51 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:51 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:52 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:53 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:471:1]
+ 468 |     } catch (error) {
+ 469 |       if (mountedRef.current) console.error('Mission execution error:', error);
+ 470 |     }
+ 471 |   };
+     :    ^
+ 472 | 
+ 473 |   const completeBuilding = async (item: any) => {
+ 474 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:53 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:519:1]
+ 516 |     } catch (error) {
+ 517 |       if (mountedRef.current) console.error('Error completing building:', error);
+ 518 |     }
+ 519 |   };
+     :    ^
+ 520 | 
+ 521 |   const completeResearch = async (item: any) => {
+ 522 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:53 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:519:1]
+ 516 |     } catch (error) {
+ 517 |       if (mountedRef.current) console.error('Error completing building:', error);
+ 518 |     }
+ 519 |   };
+     :    ^
+ 520 | 
+ 521 |   const completeResearch = async (item: any) => {
+ 522 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+[2m12:02:53 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:519:1]
+ 516 |     } catch (error) {
+ 517 |       if (mountedRef.current) console.error('Error completing building:', error);
+ 518 |     }
+ 519 |   };
+     :    ^
+ 520 | 
+ 521 |   const completeResearch = async (item: any) => {
+ 522 |     if (!mountedRef.current) return;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:54 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:566:1]
+ 563 |     } catch (error) {
+ 564 |       if (mountedRef.current) console.error('Error completing research:', error);
+ 565 |     }
+ 566 |   };
+     :    ^
+ 567 | 
+ 568 |   useEffect(() => {
+ 569 |     mountedRef.current = true;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:54 PM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:566:1]
+ 563 |     } catch (error) {
+ 564 |       if (mountedRef.current) console.error('Error completing research:', error);
+ 565 |     }
+ 566 |   };
+     :    ^
+ 567 | 
+ 568 |   useEffect(() => {
+ 569 |     mountedRef.current = true;
+     `----
+
+
+Caused by:
+    Syntax Error
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+[2m12:02:54 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:566:1]
+ 563 |     } catch (error) {
+ 564 |       if (mountedRef.current) console.error('Error completing research:', error);
+ 565 |     }
+ 566 |   };
+     :    ^
+ 567 | 
+ 568 |   useEffect(() => {
+ 569 |     mountedRef.current = true;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
+[2m12:02:54 PM[22m [31m[1m[vite][22m[39m [31mInternal server error:   x Expected ',', got ';'
+     ,-[C:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts:566:1]
+ 563 |     } catch (error) {
+ 564 |       if (mountedRef.current) console.error('Error completing research:', error);
+ 565 |     }
+ 566 |   };
+     :    ^
+ 567 | 
+ 568 |   useEffect(() => {
+ 569 |     mountedRef.current = true;
+     `----
+
+
+Caused by:
+    Syntax Error[39m
+  Plugin: [35mvite:react-swc[39m
+  File: [36mC:/Users/Shadow/Documents/project-11524767/src/hooks/useGameLoop.ts[39m
+  
