@@ -99,6 +99,7 @@ const UniverseLeaderboardPage = lazy(() => import('../pages/universe-leaderboard
 const UniverseWarEventsPage = lazy(() => import('../pages/universe-war-events/page'));
 const DiplomacyMapPage = lazy(() => import('../pages/diplomacy-map/page'));
 const StellarisViewPage = lazy(() => import('../pages/stellaris-view/page'));
+const StellarisHUDPage = lazy(() => import('../pages/stellaris-hud/page'));
 const CosmicHierarchyPage = lazy(() => import('../pages/cosmic-hierarchy/page'));
 const RacesExplorerPage = lazy(() => import('../pages/races-explorer/page'));
 const WarRoomPage = lazy(() => import('../pages/war-room/page'));
@@ -133,6 +134,7 @@ const routes: RouteObject[] = [
   // ── Public routes (no game shell) ──────────────────────────────────
   { path: '/', element: <HomePage /> },
   { path: '/game-viewport', element: <GameViewportPage /> },
+  { path: '/stellaris-hud', element: <StellarisHUDPage /> },
   { path: '/login', element: <LoginPage /> },
   { path: '/register', element: <RegisterPage /> },
   { path: '/verify-email', element: <VerifyEmailPage /> },
