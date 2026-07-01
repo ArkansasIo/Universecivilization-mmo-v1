@@ -1,6 +1,34 @@
 import { createContext, useContext, useEffect, useState, useRef, ReactNode } from 'react';
 import { User } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
+
+// ── Dev-mode credentials ─────────────────────────────────────────────────────
+const DEV_EMAIL = 'demo@universe-civ.local';
+const DEV_PASSWORD = 'Demo123!';
+const DEV_SESSION_KEY = 'galactic_dev_player_session';
+
+const DEV_USER = {
+  id: 'dev-player-00000000-0000-0000-0000-000000000001',
+  email: DEV_EMAIL,
+  user_metadata: { username: 'DemoCommander' },
+} as unknown as User;
+
+const DEV_PROFILE: ProfileData = {
+  id: DEV_USER.id,
+  username: 'DemoCommander',
+  email: DEV_EMAIL,
+  level: 5,
+  experience: 2500,
+  avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=DemoCommander',
+  vacation_mode: false,
+  is_admin: false,
+  was_guest: false,
+  converted_at: null,
+  race: null,
+  last_race_change: null,
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+};
 
 interface ProfileData {
   id: string;
@@ -166,6 +194,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Check active sessions — wrap in try/catch to handle corrupted JWT tokens
     async function initSession() {
       try {
+        // Dev-mode: restore session from localStorage
+        if (!isSupabaseConfigured) {
+          const stored = localStorage.getItem(DEV_SESSION_KEY);
+          if (stored === 'active') {
+            setUser(DEV_USER);
+            setProfile(DEV_PROFILE);
+          }
+          setLoading(false);
+          return;
+        }
+
         // If session-only flag exists, clear persisted storage and skip auto-login
         if (sessionStorage.getItem('sessionOnly') === 'true') {
           for (let i = localStorage.length - 1; i >= 0; i--) {
@@ -180,7 +219,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setLoading(false);
           return;
         }
-        
+
         const { data: { session } } = await supabase.auth.getSession();
         
         if (session?.user) {
@@ -256,6 +295,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signIn = async (email: string, password: string, rememberMe = true) => {
+    // Dev-mode bypass — no Supabase needed
+    if (!isSupabaseConfigured) {
+      const emailMatch = email === DEV_EMAIL || email === 'demo';
+      if (emailMatch && password === DEV_PASSWORD) {
+        localStorage.setItem(DEV_SESSION_KEY, 'active');
+        setUser(DEV_USER);
+        setProfile(DEV_PROFILE);
+        setLoading(false);
+        return;
+      }
+      throw new Error('Invalid dev credentials. Use demo / Demo123!');
+    }
+
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
     
@@ -318,6 +370,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signOut = async () => {
+    // Dev-mode: just clear localStorage
+    if (!isSupabaseConfigured) {
+      localStorage.removeItem(DEV_SESSION_KEY);
+      setUser(null);
+      setProfile(null);
+      return;
+    }
+
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
     setUser(null);

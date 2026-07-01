@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../../lib/supabase';
 
 function cleanEnv(value: string | undefined): string {
   if (!value) return '';
@@ -147,6 +147,13 @@ export default function LoginPage() {
     const demoUsername = 'DemoCommander';
 
     try {
+      // Dev-mode bypass — no Supabase needed
+      if (!isSupabaseConfigured) {
+        await signIn(demoEmail, demoPassword, true);
+        const redirect = searchParams.get('redirect');
+        navigate(redirect ? decodeURIComponent(redirect) : '/dashboard', { replace: true });
+        return;
+      }
       // Step 1: Try signing in with demo credentials first
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: demoEmail,
@@ -305,6 +312,42 @@ export default function LoginPage() {
                 : 'Enter your credentials to access the command interface'}
             </p>
           </div>
+
+          {/* Dev-mode banner — shown when Supabase is not configured */}
+          {!isSupabaseConfigured && (
+            <div className="mb-6 p-4 rounded-xl border border-amber-400/30 bg-amber-400/8">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-5 h-5 rounded flex items-center justify-center bg-amber-400/20 flex-shrink-0">
+                  <i className="ri-code-box-line text-amber-400 text-xs"></i>
+                </div>
+                <span className="text-amber-400 font-semibold text-sm">Dev Mode — No Supabase Connected</span>
+              </div>
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-xs font-mono" style={{ color: '#a09080' }}>
+                  <span className="text-amber-300/70">email</span>
+                  <span className="text-[#605040] mx-1">·</span>
+                  <span className="text-white/80">demo@universe-civ.local</span>
+                  <span className="text-[#605040] mx-2">/</span>
+                  <span className="text-amber-300/70">pass</span>
+                  <span className="text-[#605040] mx-1">·</span>
+                  <span className="text-white/80">Demo123!</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleDemoLogin}
+                disabled={loading || demoLoading}
+                className="w-full py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                style={{ background: 'rgba(217,160,23,0.15)', border: '1px solid rgba(217,160,23,0.35)', color: '#e8b820' }}
+              >
+                {demoLoading ? (
+                  <><i className="ri-loader-4-line animate-spin"></i> Launching Demo...</>
+                ) : (
+                  <><i className="ri-flashlight-line"></i> One-click Demo Login</>
+                )}
+              </button>
+            </div>
+          )}
 
           {/* Error Message */}
           {error && (
